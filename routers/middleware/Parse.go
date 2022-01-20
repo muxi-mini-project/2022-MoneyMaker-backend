@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"miniproject/config"
-	"miniproject/utils/token"
+	"miniproject/pkg/token"
 	"net/http"
 	"strings"
 
@@ -35,7 +35,8 @@ func Parse(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	//id := token.ID
+	id := token.ID
+	c.Set("id", id)
 	issuer := token.Issuer
 	//_, err := model.GetUserInfoFormOne()
 	if issuer != config.Issuer {

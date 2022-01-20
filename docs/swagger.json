@@ -15,5 +15,178 @@
     },
     "host": "localhost:8080",
     "basePath": "/api/vi",
-    "paths": {}
+    "paths": {
+        "/money/goods/comment": {
+            "post": {
+                "description": "\"进行核对\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Givecomment"
+                ],
+                "summary": "\"用户登录\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login successfully"
+                    },
+                    "500": {
+                        "description": "error happened"
+                    }
+                }
+            }
+        },
+        "/money/goods/comments": {
+            "get": {
+                "description": "\"分值已处理,评论无序\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "\"获取某个商品的所有评论\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"all\":所有分值情况, \"infor\":\"评论信息以及学号\"}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/tables.Comment"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "err"
+                    }
+                }
+            }
+        },
+        "/money/goods/feedback": {
+            "post": {
+                "description": "\"举报次数增加\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "\"接收举报\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "upload successfully"
+                    },
+                    "500": {
+                        "description": "error happened"
+                    }
+                }
+            }
+        },
+        "/money/search": {
+            "post": {
+                "description": "\"搜索\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "\"搜索\"",
+                "parameters": [
+                    {
+                        "description": "content",
+                        "name": "content",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "search successfully"
+                    },
+                    "204": {
+                        "description": "search nothing"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.Description": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                }
+            }
+        },
+        "tables.Comment": {
+            "type": "object",
+            "required": [
+                "comment"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "commentID": {
+                    "type": "integer"
+                },
+                "goodsID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }

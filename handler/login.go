@@ -1,8 +1,10 @@
-package controller
+package handler
 
 import (
-	"fmt"
 	model "miniproject/model/getstu"
+	"miniproject/model/mysql"
+	"miniproject/model/tables"
+	"miniproject/pkg/response"
 	"miniproject/pkg/token"
 
 	"github.com/gin-gonic/gin"
@@ -13,10 +15,20 @@ type user struct {
 	Password string `json:"password" binding:"required"`
 }
 
+//@Summary "用户登录"
+//@Description "进行核对"
+//@Tags Givecomment
+//@Accept application/json
+//@Produce application/json
+//@Param goodsid query string true "goodsid"
+//@Success 200 "login successfully"
+//@Failure 500 "error happened"
+//@Router /money/goods/comment [post]
 func Login(c *gin.Context) {
 	var user user
 	if err := c.ShouldBindJSON(&user); err != nil {
-		fmt.Println("bindjson错误")
+		response.SendResponse(c, "error happened", 500)
+		return
 	}
 
 	_, err := model.GetUserInfoFormOne(user.ID, user.Password)
@@ -28,13 +40,22 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	Create(user.ID)
 	token, err := token.GenerateToken(user.ID)
 	if err != nil {
-		//log.Fatal(err)
-		fmt.Println("token返回错误")
+		response.SendResponse(c, "token生成错误", 500)
 	}
 	c.JSON(200, gin.H{
-		"msg":   "登录成功",
+		"msg":   "登录成功,请保留token并将其放在之后的请求头中",
 		"token": token,
 	})
+}
+
+func Create(id string) {
+	var user tables.User
+	if err := mysql.DB.Where("id=?", id).Find(&user).Error; err != nil {
+		mysql.DB.Model(&tables.User{}).Create(map[string]interface{}{
+			"id": id,
+		})
+	}
 }

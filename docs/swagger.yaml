@@ -1,4 +1,27 @@
 basePath: /api/vi
+definitions:
+  handler.Description:
+    properties:
+      comment:
+        type: string
+      score:
+        type: integer
+    type: object
+  tables.Comment:
+    properties:
+      comment:
+        type: string
+      commentID:
+        type: integer
+      goodsID:
+        type: integer
+      id:
+        type: string
+      score:
+        type: integer
+    required:
+    - comment
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -8,7 +31,96 @@ info:
   termsOfService: http://swagger.io/terrms/
   title: miniproject
   version: 1.0.0
-paths: {}
+paths:
+  /money/goods/comment:
+    post:
+      consumes:
+      - application/json
+      description: '"进行核对"'
+      parameters:
+      - description: goodsid
+        in: query
+        name: goodsid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: login successfully
+        "500":
+          description: error happened
+      summary: '"用户登录"'
+      tags:
+      - Givecomment
+  /money/goods/comments:
+    get:
+      consumes:
+      - application/json
+      description: '"分值已处理,评论无序"'
+      parameters:
+      - description: goodsid
+        in: query
+        name: goodsid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"all":所有分值情况, "infor":"评论信息以及学号"}'
+          schema:
+            items:
+              $ref: '#/definitions/tables.Comment'
+            type: array
+        "500":
+          description: err
+      summary: '"获取某个商品的所有评论"'
+      tags:
+      - Comment
+  /money/goods/feedback:
+    post:
+      consumes:
+      - application/json
+      description: '"举报次数增加"'
+      parameters:
+      - description: goodsid
+        in: query
+        name: goodsid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: upload successfully
+        "500":
+          description: error happened
+      summary: '"接收举报"'
+      tags:
+      - Feedback
+  /money/search:
+    post:
+      consumes:
+      - application/json
+      description: '"搜索"'
+      parameters:
+      - description: content
+        in: body
+        name: content
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: search successfully
+        "204":
+          description: search nothing
+      summary: '"搜索"'
+      tags:
+      - Search
 schemes:
 - http
 swagger: "2.0"
