@@ -66,5 +66,4 @@ func Comment(c *gin.Context) {
 		"scores": all,
 		"infor":  re,
 	})
-
 }

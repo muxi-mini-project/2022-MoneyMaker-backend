@@ -12,7 +12,7 @@ type User struct {
 
 //下架了，但是用户如果已经接单完成后，该用户任然可以查看到，只是无法被搜索以及从我的橱窗显示
 type Good struct {
-	GoodsID  int ``
+	GoodsID  int
 	ID       string
 	Scores   int //总评分
 	Summary  string
