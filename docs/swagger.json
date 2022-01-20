@@ -1,0 +1,19 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "赚圈圈API",
+        "title": "miniproject",
+        "termsOfService": "http://swagger.io/terrms/",
+        "contact": {
+            "name": "yyj",
+            "email": "2105753640@qq.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/vi",
+    "paths": {}
+}

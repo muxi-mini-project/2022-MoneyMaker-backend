@@ -1,0 +1,14 @@
+basePath: /api/vi
+host: localhost:8080
+info:
+  contact:
+    email: 2105753640@qq.com
+    name: yyj
+  description: 赚圈圈API
+  termsOfService: http://swagger.io/terrms/
+  title: miniproject
+  version: 1.0.0
+paths: {}
+schemes:
+- http
+swagger: "2.0"
