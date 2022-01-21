@@ -11,6 +11,7 @@ type User struct {
 //下架了，就都差看不到了
 type Good struct {
 	GoodsID   int    `gorm:"goodsid"`
+	Title     string `gorm:"title"`
 	ID        string `gorm:"id"`
 	Scores    int    `gorm:"scores"`
 	Summary   string `gorm:"summary"`
@@ -25,8 +26,8 @@ type Good struct {
 
 type Comment struct {
 	CommentID int    `gorm:"commentid"`
-	Comment   string `json:"comment" binding:"required"`
-	Score     int    `json:score binding:"required"`
+	Comment   string `gorm:"comment"`
+	Score     int    `gorm:"score"`
 	GoodsID   int    `gorm:"goodsid"`
 	ID        string `gorm:"id"`
 }

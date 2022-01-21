@@ -76,7 +76,7 @@ func Getcomment(c *gin.Context) {
 //@Produce application/json
 //@Param comment body Description true "comment"
 //@Param goodsid query string true "goodsid"
-//@Success 200 "upload successfullu"
+//@Success 200 "upload successfully"
 //@Failure 500 "error happened"
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {

@@ -28,8 +28,19 @@ func Router() *gin.Engine {
 		{
 			groupmy.GET("/cart", handler.Mycart)
 			groupmy.GET("/goods", handler.Mygoods)
+			groupmy.PATCH("/new_star", handler.Addstar)
+			groupmy.POST("/cancellation", handler.Cancelstar)
 		}
 		group.POST("/search", handler.Search)
+
+		groupgoods := group.Group("/goods")
+		{
+			groupgoods.DELETE("/deletion", handler.Deletegood)
+			groupgoods.POST("/addition", handler.Addgood)
+			groupgoods.GET("/shopping", handler.Buy)
+		}
 	}
+	//购买后返回联系方式的接口
+	router.StaticFile(handler.Goodsurl, handler.Goodsway)
 	return router
 }

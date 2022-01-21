@@ -53,6 +53,7 @@ func Login(c *gin.Context) {
 
 func Create(id string) {
 	var user tables.User
+	//不存在就会报错
 	if err := mysql.DB.Where("id=?", id).Find(&user).Error; err != nil {
 		mysql.DB.Model(&tables.User{}).Create(map[string]interface{}{
 			"id": id,
