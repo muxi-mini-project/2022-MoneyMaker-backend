@@ -2,43 +2,53 @@ CREATE DATABASE miniproject charset=UTF8;
 
 USE miniproject;
 
-CREATE TABLE user(
+CREATE TABLE users(
     id VARCHAR(10) PRIMARY KEY,
     nickname VARCHAR(20),
-    avatar TEXT
+    avatar TEXT,
+    buygoods TEXT
 );
 
-CREATE TABLE good(
-    goodsid INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE goods(
+    goods_id INT PRIMARY KEY AUTO_INCREMENT,
     id VARCHAR(10),
-    scores INT,
-    price INT NOT NULL,
+    title TEXT,
+    price INT ,
     goodszone TEXT,
     summary TEXT,
+    scores FLOAT,
+    goodsin VARCHAR(5) DEFAULT "yes",
     way TEXT,
     avatar TEXT,
-    buyer TEXT,
-    feedback INT,
-    goodsin VARCHAR(3),
+    buyer TEXT ,
+    feed_back INT DEFAULT 0,
     CONSTRAINT first
-    FOREIGN KEY(id) REFERENCES user(id)
+    FOREIGN KEY(id) REFERENCES users(id)
 );
 
-CREATE TABLE cart(
+CREATE TABLE carts(
     id VARCHAR(10) PRIMARY KEY,
-    goodsid INT,
+    goodsid TEXT,
     CONSTRAINT second
-    FOREIGN KEY(id) REFERENCES user(id)
+    FOREIGN KEY(id) REFERENCES users(id)
 );
 
-CREATE TABLE comment(
-    commentid INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE comments(
+    comment_id INT PRIMARY KEY AUTO_INCREMENT,
     id VARCHAR(10),
     score INT,
-    goodsid INT,
+    goods_id INT,
     comment TEXT,
+    givetime TEXT,
     CONSTRAINT third
-    FOREIGN KEY(id) REFERENCES user(id),
+    FOREIGN KEY(id) REFERENCES users(id),
     CONSTRAINT forth
-    FOREIGN KEY(goodsid) REFERENCES good(goodsid)
+    FOREIGN KEY(goods_id) REFERENCES goods(goods_id)
 );
+
+CREATE TABLE messages(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    buyer VARCHAR(10),
+    my VARCHAR(10),
+    msg TEXT
+)

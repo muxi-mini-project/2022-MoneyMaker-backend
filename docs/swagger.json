@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "赚圈圈API",
+        "description": "\"赚圈圈API 返回的goods如果其中的goodsin为yes代表它可以进行交易，即：未下架\"",
         "title": "miniproject",
         "termsOfService": "http://swagger.io/terrms/",
         "contact": {
@@ -16,9 +16,9 @@
     "host": "localhost:8080",
     "basePath": "/api/vi",
     "paths": {
-        "/money/goods/comment": {
+        "/money/entrance": {
             "post": {
-                "description": "\"进行核对\"",
+                "description": "\"登录的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -31,6 +31,100 @@
                 "summary": "\"用户登录\"",
                 "parameters": [
                     {
+                        "description": "用户信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.user"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"login successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/goods/addition": {
+            "post": {
+                "description": "\"新增一个商品时的api\"",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "New goods"
+                ],
+                "summary": "\"上架商品\"",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "商品图二进制文件",
+                        "name": "avatar",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "联系方式二进制文件",
+                        "name": "way",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"upload successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/goods/comment": {
+            "post": {
+                "description": "\"用户做出评价，点击评价时的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Givecomment"
+                ],
+                "summary": "\"用户对某个商品的评论\"",
+                "parameters": [
+                    {
+                        "description": "comment",
+                        "name": "comment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.Description"
+                        }
+                    },
+                    {
                         "type": "string",
                         "description": "goodsid",
                         "name": "goodsid",
@@ -40,17 +134,23 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "login successfully"
+                        "description": "msg\":\"give successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "500": {
-                        "description": "error happened"
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
         },
         "/money/goods/comments": {
             "get": {
-                "description": "\"分值已处理,评论无序\"",
+                "description": "\"商品详情页点击评价时的api \"scores\":所有分值情况, \"infor\":\"评论信息以及学号\"\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,23 +172,61 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{\"all\":所有分值情况, \"infor\":\"评论信息以及学号\"}",
+                        "description": "infor\":[]tables.Comment,\"score\":All}",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/tables.Comment"
-                            }
+                            "type": "string"
                         }
                     },
                     "500": {
-                        "description": "err"
+                        "description": "msg\":\"err\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/goods/deletion": {
+            "get": {
+                "description": "\"下架商品的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Delete"
+                ],
+                "summary": "\"商家下架商品\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"delete successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
         },
         "/money/goods/feedback": {
             "post": {
-                "description": "\"举报次数增加\"",
+                "description": "\"举报的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -110,7 +248,153 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "upload successfully"
+                        "description": "msg\":\"举报成功!\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/goods/scanning": {
+            "get": {
+                "description": "\"点击进入商品详情页的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Scan"
+                ],
+                "summary": "\"查询某个商品的详细信息\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\",\"infor\":tables.User,\"user\":tables.User,\"tips\":\"如果goodsin是no则代表已经下架，此时则不显示开启交易按钮\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/goods/shopping": {
+            "get": {
+                "description": "\"点击购买时的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Buy"
+                ],
+                "summary": "\"用户进行购买\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\",\"img\":\"联系方式对应的url\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/homepage": {
+            "post": {
+                "description": "\"order=1-\u003e返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Homepage"
+                ],
+                "summary": "\"主页内容\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\",\"infor\":[]tables.Good}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/message": {
+            "get": {
+                "description": "\"信息已根据时间按升序排列，id越大越新，消息通知的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Return Message"
+                ],
+                "summary": "\"返回用户购买、收藏后的信息\"",
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\",\"infor\":[]tables.Message}",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "500": {
                         "description": "error happened"
@@ -118,9 +402,242 @@
                 }
             }
         },
+        "/money/my/cancellation": {
+            "post": {
+                "description": "\"在购物车里取消收藏的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cancel"
+                ],
+                "summary": "\"取消收藏\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/my/cart": {
+            "get": {
+                "description": "\"购物车\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MYCart"
+                ],
+                "summary": "\"查看我的购物车\"",
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"check successfully\",\"infot\":[]tables.Good}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "204": {
+                        "description": "msg\":\"check successfully\",\"infot\":\"nothing\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/my/goods": {
+            "get": {
+                "description": "\"橱窗\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MYgoods"
+                ],
+                "summary": "\"查看我的橱窗\"",
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"check successfully\",\"infot\":[]tables.Good}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/my/goods/fish": {
+            "get": {
+                "description": "\"点击确认完成时的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Finish trade"
+                ],
+                "summary": "\"商家完成订单\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "error happened"
+                    }
+                }
+            }
+        },
+        "/money/my/goods/unfish": {
+            "get": {
+                "description": "\"返回订单,需要点完成的是‘my sell’-\u003e[]string 是与我做交易的人的id,因为一个商品可能被多个人购买，所以string切片的长度就是‘完成订单’的订单数,点评价的是‘my buy’\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "return trade"
+                ],
+                "summary": "\"返回用户与卖家未完成的订单\"",
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"success\",\"my buy\":[]Two,\"my sell\":map[Two][]string}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/my/message": {
+            "post": {
+                "description": "\"我的个人信息的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "summary": "\"返回我的信息\"",
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"avatar 是头像对应的url\",\"infor\":tables.User}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\",\"infor\":tables.User}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/new_star": {
+            "patch": {
+                "description": "\"添加至购物车时的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Add"
+                ],
+                "summary": "\"新增收藏\"",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "goodsid",
+                        "name": "goodsid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "msg\":\"add successfully\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/money/search": {
             "post": {
-                "description": "\"搜索\"",
+                "description": "\"order=1-\u003e返回前十个商品的内容，summary不需要展示出来-》在商品详情页里,搜索的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -133,21 +650,32 @@
                 "summary": "\"搜索\"",
                 "parameters": [
                     {
+                        "type": "string",
                         "description": "content",
                         "name": "content",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "search successfully"
+                        "description": "msg\":\"search successfully\",\"infor\":[]tables.Good}",
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     "204": {
-                        "description": "search nothing"
+                        "description": "msg\":\"find nothing\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -156,6 +684,10 @@
     "definitions": {
         "handler.Description": {
             "type": "object",
+            "required": [
+                "comment",
+                "score"
+            ],
             "properties": {
                 "comment": {
                     "type": "string"
@@ -165,26 +697,19 @@
                 }
             }
         },
-        "tables.Comment": {
+        "handler.user": {
             "type": "object",
             "required": [
-                "comment"
+                "id",
+                "password"
             ],
             "properties": {
-                "comment": {
-                    "type": "string"
-                },
-                "commentID": {
-                    "type": "integer"
-                },
-                "goodsID": {
-                    "type": "integer"
-                },
                 "id": {
+                    "description": "一定要输入的加上了required",
                     "type": "string"
                 },
-                "score": {
-                    "type": "integer"
+                "password": {
+                    "type": "string"
                 }
             }
         }
