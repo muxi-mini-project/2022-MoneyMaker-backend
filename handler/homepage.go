@@ -17,7 +17,7 @@ import (
 //@Param page query string true "page"
 //@Success 200 {string} json{"msg":"success","infor":[]tables.Good}
 //@Success 500 {string} json{"msg":"error"}
-//@Router /money/homepage [post]
+//@Router /money/homepage [get]
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
 	page := c.Query("page")

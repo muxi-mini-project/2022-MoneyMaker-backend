@@ -30,7 +30,8 @@ func Search(c *gin.Context) {
 	page := c.Query("page")
 	num := easy.STI(page)
 	content := c.Request.FormValue("content")
-	if err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%"`, content)).Find(&goods).Error; err != nil {
+	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%"`, content)).Find(&goods).Error
+	if err != nil || num == -1 {
 		response.SendResponse(c, "find nothing", 204)
 		return
 	}

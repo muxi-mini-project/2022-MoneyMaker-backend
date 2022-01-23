@@ -198,7 +198,7 @@ var doc = `{
             }
         },
         "/money/goods/deletion": {
-            "get": {
+            "delete": {
                 "description": "\"下架商品的api\"",
                 "consumes": [
                     "application/json"
@@ -350,7 +350,7 @@ var doc = `{
             }
         },
         "/money/homepage": {
-            "post": {
+            "get": {
                 "description": "\"order=1-\u003e返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api\"",
                 "consumes": [
                     "application/json"
@@ -515,7 +515,7 @@ var doc = `{
                 }
             }
         },
-        "/money/my/goods/fish": {
+        "/money/my/goods/finish": {
             "get": {
                 "description": "\"点击确认完成时的api\"",
                 "consumes": [
@@ -565,7 +565,7 @@ var doc = `{
                 "summary": "\"返回用户与卖家未完成的订单\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"my buy\":[]Two,\"my sell\":map[Two][]string}",
+                        "description": "msg\":\"success\",\"my buy\":[]tables.Good,\"my sell\":[]Two}",
                         "schema": {
                             "type": "string"
                         }
@@ -580,7 +580,7 @@ var doc = `{
             }
         },
         "/money/my/message": {
-            "post": {
+            "get": {
                 "description": "\"我的个人信息的api\"",
                 "consumes": [
                     "application/json"
@@ -632,7 +632,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"add successfully\"}",
+                        "description": "msg\":\"add successfully or 你已经收藏过该商品了\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -658,7 +658,7 @@ var doc = `{
                 "tags": [
                     "Search"
                 ],
-                "summary": "\"搜索\"",
+                "summary": "\"搜索并返回已排序的商品信息\"",
                 "parameters": [
                     {
                         "type": "string",

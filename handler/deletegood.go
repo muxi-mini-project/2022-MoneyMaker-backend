@@ -18,7 +18,7 @@ import (
 //@Param goodsid query string true "goodsid"
 //@Success 200 {string} {"msg":"delete successfully"}
 //@Failure 500 {string} {"msg":"error happened"}
-//@Router /money/goods/deletion [get]
+//@Router /money/goods/deletion [delete]
 func Deletegood(c *gin.Context) {
 	goodsstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsstr)

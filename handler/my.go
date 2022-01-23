@@ -25,6 +25,7 @@ func Mygoods(c *gin.Context) {
 	stuid, ok := id.(string)
 	if !ok || !exists {
 		response.SendResponse(c, "error happened!", 500)
+		return
 	}
 	mysql.DB.Where("id=?", stuid).Find(&goods)
 	for i := 0; i < len(goods); i++ {
@@ -90,12 +91,13 @@ func Mycart(c *gin.Context) {
 //@Produce application/json
 //@Success 200 {string} json{"msg":"avatar 是头像对应的url","infor":tables.User}
 //@Failure 500 {string} json{"msg":"error happened","infor":tables.User}
-//@Router /money/my/message [post]
+//@Router /money/my/message [get]
 func Mymessage(c *gin.Context) {
 	var user tables.User
 	id, exists := c.Get("id")
 	if !exists {
 		response.SendResponse(c, "return error!", 500)
+		return
 	}
 	mysql.DB.Where("id=?", id).Find(&user)
 	user.Buygoods = ""
