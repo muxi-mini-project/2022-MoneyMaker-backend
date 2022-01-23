@@ -144,7 +144,7 @@ paths:
       tags:
       - Comment
   /money/goods/deletion:
-    get:
+    delete:
       consumes:
       - application/json
       description: '"下架商品的api"'
@@ -244,7 +244,7 @@ paths:
       tags:
       - Buy
   /money/homepage:
-    post:
+    get:
       consumes:
       - application/json
       description: '"order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"'
@@ -352,7 +352,7 @@ paths:
       summary: '"查看我的橱窗"'
       tags:
       - MYgoods
-  /money/my/goods/fish:
+  /money/my/goods/finish:
     get:
       consumes:
       - application/json
@@ -385,7 +385,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"success","my buy":[]Two,"my sell":map[Two][]string}
+          description: msg":"success","my buy":[]tables.Good,"my sell":[]Two}
           schema:
             type: string
         "500":
@@ -396,7 +396,7 @@ paths:
       tags:
       - return trade
   /money/my/message:
-    post:
+    get:
       consumes:
       - application/json
       description: '"我的个人信息的api"'
@@ -429,7 +429,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"add successfully"}
+          description: msg":"add successfully or 你已经收藏过该商品了"}
           schema:
             type: string
         "500":
@@ -466,7 +466,7 @@ paths:
           description: msg":"find nothing"}
           schema:
             type: string
-      summary: '"搜索"'
+      summary: '"搜索并返回已排序的商品信息"'
       tags:
       - Search
 schemes:

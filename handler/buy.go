@@ -64,8 +64,7 @@ func Buy(c *gin.Context) {
 	//Way存放图片对应的地址，再使用staticfs打开
 	//url := "localhost:8080/images/way/" + strconv.Itoa(goodsid) + ".jpg"
 	c.JSON(200, gin.H{
-		"msg":   "success",
-		"img":   good.Way,
-		"infor": "联系方式在url",
+		"msg": "buy successfully",
+		"way": good.Way,
 	})
 }

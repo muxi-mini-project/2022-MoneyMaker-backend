@@ -26,6 +26,7 @@ func Scan(c *gin.Context) {
 	err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
 	if goodsid == -1 || err != nil {
 		response.SendResponse(c, "error happened!", 500)
+		return
 	}
 	good.Way = ""
 	good.Buyer = ""

@@ -21,7 +21,7 @@ type Two struct {
 //@Tags return trade
 //@Accept application/json
 //@Produce application/json
-//@Success 200 {string} json{"msg":"success","my buy":[]Two,"my sell":map[Two][]string}
+//@Success 200 {string} json{"msg":"success","my buy":[]tables.Good,"my sell":[]Two}
 //@Failure 500 {string} json{"error happened"}
 //@Router /money/my/goods/unfish [get]
 func UnFinish(c *gin.Context) {

@@ -15,7 +15,7 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "goodsid"
-//@Success 200 {string} json{"msg":"add successfully"}
+//@Success 200 {string} json{"msg":"add successfully or 你已经收藏过该商品了"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/new_star [patch]
 func Addstar(c *gin.Context) {
