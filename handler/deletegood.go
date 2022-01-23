@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -10,22 +11,22 @@ import (
 )
 
 //@Summary "商家下架商品"
-//@Description "购买"
+//@Description "下架商品的api"
 //@Tags Delete
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "goodsid"
-//@Success 200 "delete successfully"
-//@Failure 500 "error happened"
+//@Success 200 {string} {"msg":"delete successfully"}
+//@Failure 500 {string} {"msg":"error happened"}
 //@Router /money/goods/deletion [get]
 func Deletegood(c *gin.Context) {
-	goodsidstring := c.Query("goodsid")
-	goodsid := easy.STI(goodsidstring)
-	if goodsid != -1 {
-		err := mysql.DB.Where("goodsid=?", goodsid).Delete(&tables.Good{}).Error
-		if err != nil {
-			response.SendResponse(c, "failed to delete!", 500)
-		}
+	goodsstr := c.Query("goodsid")
+	goodsid := easy.STI(goodsstr)
+	err := mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("goodsin", "no").Error
+	if goodsid == -1 || err != nil {
+		fmt.Println(goodsid, err)
+		response.SendResponse(c, "error happened", 500)
+		return
 	}
 	response.SendResponse(c, "delete successfully", 200)
 }

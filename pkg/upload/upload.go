@@ -9,16 +9,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UploadA(c *gin.Context, goodsid int) string {
+func UploadA(c *gin.Context, goodsid int) bool {
 	var way string
 	name := c.PostForm("name")
 	fmt.Println(name)
 	file, _, err := c.Request.FormFile("avatar")
 	if err != nil {
-		c.JSON(400, gin.H{
-			"msg": "error!",
-		})
-		return ""
+		fmt.Println(err)
+		return false
 	}
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
@@ -27,29 +25,26 @@ func UploadA(c *gin.Context, goodsid int) string {
 	tmp, err := os.Create(way)
 	if err != nil {
 		fmt.Println(err)
+		return false
 	}
 	defer tmp.Close()
 	_, err = io.Copy(tmp, file)
 	if err != nil {
-		c.JSON(500, gin.H{
-			"msg": "error!",
-		})
-		return ""
+		fmt.Println(err)
+		return false
 	}
-	fmt.Println("存储成功")
-	return way
+	//fmt.Println("存储成功")
+	return true
 }
 
-func UploadW(c *gin.Context, goodsid int) string {
+func UploadW(c *gin.Context, goodsid int) bool {
 	var way string
 	name := c.PostForm("name")
 	fmt.Println(name)
 	file, _, err := c.Request.FormFile("way")
 	if err != nil {
-		c.JSON(400, gin.H{
-			"msg": "error!",
-		})
-		return ""
+		fmt.Println(err)
+		return false
 	}
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
@@ -58,15 +53,14 @@ func UploadW(c *gin.Context, goodsid int) string {
 	tmp, err := os.Create(way)
 	if err != nil {
 		fmt.Println(err)
+		return false
 	}
 	defer tmp.Close()
 	_, err = io.Copy(tmp, file)
 	if err != nil {
-		c.JSON(500, gin.H{
-			"msg": "error!",
-		})
-		return ""
+		fmt.Println(err)
+		return false
 	}
-	fmt.Println("存储成功")
-	return way
+	//fmt.Println("存储成功")
+	return true
 }
