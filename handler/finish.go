@@ -82,22 +82,28 @@ func UnFinish(c *gin.Context) {
 //@Failure 500 "error happened"
 //@Router /money/my/goods/finish [get]
 func Finsh(c *gin.Context) {
-	var good tables.Good
-	var user tables.User
-	var re string
+	var (
+		good tables.Good
+		user tables.User
+		re   string
+	)
+
 	//点击完成之后把这个购买者从buyer中删去，以及goodsid从uesr中删除,有多个的情况下，则只删除一个
 	goodsid := c.Query("goodsid")
 	strid, exists := c.Get("id")
 	id, ok := strid.(string)
+
 	if !exists || !ok {
 		response.SendResponse(c, "error", 500)
 		return
 	}
+
 	mysql.DB.Where("goods_id=?", goodsid).Find(&good)
 	mysql.DB.Where("id=?", id).Find(&user)
 
 	re = easy.Delete(good.Buyer, id)
 	num := easy.STI(goodsid)
+
 	if num == -1 {
 		fmt.Println("2", num)
 		response.SendResponse(c, "error", 500)
@@ -107,6 +113,7 @@ func Finsh(c *gin.Context) {
 
 	re = ""
 	re = easy.Delete(user.Buygoods, goodsid)
+
 	mysql.DB.Model(&tables.User{}).Where("id=?", id).Update("buygoods", re)
 	c.JSON(200, gin.H{
 		"msg": "success",

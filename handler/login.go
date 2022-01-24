@@ -33,7 +33,6 @@ func Login(c *gin.Context) {
 	}
 
 	stu, err := model.GetUserInfoFormOne(user.ID, user.Password)
-	//fmt.Println(stu)
 
 	if err != nil {
 		//用户认证信息错误返回401状态码
@@ -43,12 +42,14 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+
 	Create(user.ID, stu.User.Name)
+
 	token, err := token.GenerateToken(user.ID)
 	if err != nil {
 		response.SendResponse(c, "token生成错误", 500)
 	}
-	//2021212200
+
 	c.JSON(200, gin.H{
 		"msg":   "登录成功,请保留token并将其放在之后的请求头中",
 		"token": token,
@@ -68,6 +69,7 @@ func Create(id string, name string) {
 			"nickname": name,
 			"buygoods": "",
 		})
+
 		//新建一个空的购物车
 		mysql.DB.Model(&tables.Cart{}).Create(map[string]interface{}{
 			"id": id})

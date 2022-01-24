@@ -23,10 +23,12 @@ func Deletegood(c *gin.Context) {
 	goodsstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsstr)
 	err := mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("goodsin", "no").Error
+
 	if goodsid == -1 || err != nil {
 		fmt.Println(goodsid, err)
 		response.SendResponse(c, "error happened", 500)
 		return
 	}
+
 	response.SendResponse(c, "delete successfully", 200)
 }

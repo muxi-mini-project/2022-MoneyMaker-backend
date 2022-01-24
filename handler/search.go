@@ -21,16 +21,14 @@ import (
 //@Success 204 {string} json{"msg":"find nothing"}
 //@Router /money/search [post]
 func Search(c *gin.Context) {
-	//title
-	//avatar
-	//summary
-	//zone
 	//根据举报次数与评分进行优先返回
 	var goods []tables.Good
+
 	page := c.Query("page")
 	num := easy.STI(page)
 	content := c.Request.FormValue("content")
 	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%"`, content)).Find(&goods).Error
+
 	if err != nil || num == -1 {
 		response.SendResponse(c, "find nothing", 204)
 		return
@@ -40,7 +38,6 @@ func Search(c *gin.Context) {
 	}
 	//这里不需要返回图片的url
 
-	//fmt.Println(goods)
 	if len(goods) < 10 {
 		c.JSON(200, gin.H{
 			"msg":   "success",

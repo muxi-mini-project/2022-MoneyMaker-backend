@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -47,34 +46,40 @@ func Mygoods(c *gin.Context) {
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/my/cart [get]
 func Mycart(c *gin.Context) {
-	var cart tables.Cart
-	var goods []tables.Good
-	var good tables.Good
+	var (
+		cart  tables.Cart
+		goods []tables.Good
+		good  tables.Good
+	)
+
 	id, exists := c.Get("id")
 	stuid, ok := id.(string)
+
 	if !ok || !exists {
 		response.SendResponse(c, "error happened!", 500)
 		return
 	}
+
 	mysql.DB.Where("id=?", stuid).Find(&cart)
+
 	if cart.Goodsid == "" {
 		response.SendResponse(c, "nothing", 204)
 		return
 	} else {
 		goodsstrs := strings.Split(cart.Goodsid, ",")
-		fmt.Println(goodsstrs)
+
 		for _, v := range goodsstrs {
 			goodsid := easy.STI(v)
+
 			if goodsid != -1 {
 				err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
-				fmt.Println(good)
+
 				if err != nil {
 					response.SendResponse(c, "error", 500)
 					return
 				}
 
 				goods = append(goods, good)
-				fmt.Println(goods)
 			}
 		}
 	}
@@ -94,12 +99,15 @@ func Mycart(c *gin.Context) {
 //@Router /money/my/message [get]
 func Mymessage(c *gin.Context) {
 	var user tables.User
+
 	id, exists := c.Get("id")
 	if !exists {
 		response.SendResponse(c, "return error!", 500)
 		return
 	}
+
 	mysql.DB.Where("id=?", id).Find(&user)
+
 	user.Buygoods = ""
 	c.JSON(200, gin.H{
 		"msg":   "success",

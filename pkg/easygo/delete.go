@@ -1,15 +1,16 @@
 package easy
 
 import (
-	"fmt"
 	"strings"
 )
 
 func Delete(str string, id string) string {
 	var re string
 	var count = 0
+
 	strstr := strings.Split(str, ",")
-	fmt.Println(strstr, len(strstr))
+	//fmt.Println(strstr, len(strstr))
+
 	for i, v := range strstr {
 		var ok = false
 		if v == id {
@@ -26,8 +27,8 @@ func Delete(str string, id string) string {
 			re = re + v
 		}
 
-		fmt.Println(re)
+		//fmt.Println(re)
 	}
-	fmt.Println(re)
+	//fmt.Println(re)
 	return re
 }

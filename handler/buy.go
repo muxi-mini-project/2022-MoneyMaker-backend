@@ -20,14 +20,17 @@ import (
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {
 	//买完之后就展示联系方式，并把用户名字放在buyer中
-	var good tables.Good
-	var strstr string
-	//var msg tables.Message
-	var user tables.User
+	var (
+		good   tables.Good
+		strstr string
+		user   tables.User
+	)
+
 	goodsidstring := c.Query("goodsid")
 	id, exists := c.Get("id")
 	stuid, ok := id.(string)
 	goodsid := easy.STI(goodsidstring)
+
 	if !exists || !ok || goodsid == -1 {
 		response.SendResponse(c, "error happened", 500)
 		return
@@ -43,8 +46,6 @@ func Buy(c *gin.Context) {
 	} else {
 		strstr = strstr + stuid
 	}
-	//fmt.Println(strstr)
-	//strstr = easy.New(good.Buyer, stuid)
 
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
 	//mysql.DB.Where("goods_id=?", goodsid).Find(&good)
@@ -58,11 +59,12 @@ func Buy(c *gin.Context) {
 	} else {
 		strstr = strstr + goodsidstring
 	}
+
 	//re := easy.New(user.Buygoods, goodsidstring)
 	mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
 
 	//Way存放图片对应的地址，再使用staticfs打开
-	//url := "localhost:8080/images/way/" + strconv.Itoa(goodsid) + ".jpg"
+
 	c.JSON(200, gin.H{
 		"msg": "buy successfully",
 		"way": good.Way,

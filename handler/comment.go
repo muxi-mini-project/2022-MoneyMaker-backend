@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -40,16 +39,17 @@ type Description struct {
 func Getcomment(c *gin.Context) {
 	//先获取goodsid
 	var re []tables.Comment
-	//var ans = make(map[string]string)
 	var all All
+
 	goodsidstring := c.Query("goodsid")
 	goodsid, err := strconv.Atoi(goodsidstring)
 	if err != nil {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}
+
 	mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
-	fmt.Println(re)
+	//fmt.Println(re)
 	for i := 0; i < len(re); i++ {
 		all.Sum += re[i].Score
 		switch re[i].Score {
@@ -87,14 +87,16 @@ func Getcomment(c *gin.Context) {
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
-	var re []tables.Comment
-	var des Description
-	var cmt tables.Comment
+	var (
+		re  []tables.Comment
+		des Description
+		cmt tables.Comment
+	)
+
 	goodsid := c.Query("goodsid")
-	//fmt.Println(goodsid)
 	id, exists := c.Get("id")
+
 	if err := c.ShouldBindJSON(&des); err != nil || !exists {
-		//fmt.Println("1", des, err, exists)
 		response.SendResponse(c, "error happened", 500)
 		return
 	}
@@ -109,7 +111,6 @@ func Givecomment(c *gin.Context) {
 	cmt.Score = des.Score
 	cmt.Comment = des.Comment
 	err := mysql.DB.Create(&cmt).Error
-	fmt.Println(cmt)
 
 	if cmt.GoodsID == -1 || !ok || err != nil {
 		//fmt.Println("2", cmt.GoodsID, err, ok)
@@ -142,6 +143,7 @@ func Average(c *gin.Context, re []tables.Comment, goodsid string) string {
 		sum += re[i].Score
 	}
 	good.Scores = float64(sum) / float64(len(re))
+
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", id).Update("scores", good.Scores)
 	return ""
 }

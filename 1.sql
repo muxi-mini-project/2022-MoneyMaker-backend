@@ -1,3 +1,5 @@
+DROP DATABASE if exists miniproject;
+
 CREATE DATABASE miniproject charset=UTF8;
 
 USE miniproject;

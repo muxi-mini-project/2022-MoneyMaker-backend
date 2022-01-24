@@ -20,6 +20,7 @@ import (
 //@Router /money/homepage [get]
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
+
 	page := c.Query("page")
 	num := easy.STI(page)
 	err := mysql.DB.Order("feed_back desc").Order("scores desc").Find(&goods).Error
@@ -32,6 +33,7 @@ func Homepage(c *gin.Context) {
 	for i := 0; i < len(goods); i++ {
 		goods[i].Way = ""
 	}
+
 	if len(goods) < 10 {
 		c.JSON(200, gin.H{
 			"msg":   "success",
