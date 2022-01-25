@@ -21,17 +21,21 @@ import (
 func Scan(c *gin.Context) {
 	var good tables.Good
 	var user tables.User
+
 	goodsidstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsidstr)
 	err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
+
 	if goodsid == -1 || err != nil {
 		response.SendResponse(c, "error happened!", 500)
 		return
 	}
+
 	good.Way = ""
 	good.Buyer = ""
 	mysql.DB.Model(&tables.User{}).Where("id=?", good.ID).Find(&user)
 	user.Buygoods = ""
+
 	c.JSON(200, gin.H{
 		"msg":   "success",
 		"infor": good,

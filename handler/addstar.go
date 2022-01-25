@@ -20,22 +20,27 @@ import (
 //@Router /money/new_star [patch]
 func Addstar(c *gin.Context) {
 	//用户收藏后在cart里就会新增这个商品的goodsid
-	var cart tables.Cart
-	var re string
-	//var msg tables.Message
-	var good tables.Good
+	var (
+		cart tables.Cart
+		re   string
+		good tables.Good
+	)
+
 	id, exists := c.Get("id")
 	goodsid := c.Query("goodsid")
 	stuid, ok := id.(string)
+
 	if !exists || !ok {
 		response.SendResponse(c, "error happened", 500)
 	}
+
 	mysql.DB.Where("id=?", stuid).Find(&cart)
 	if cart.Goodsid != "" {
 		re, ok = easy.NewT(cart.Goodsid, goodsid)
 	} else {
 		re = re + goodsid
 	}
+
 	if ok {
 		err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 		if err != nil {
@@ -43,6 +48,7 @@ func Addstar(c *gin.Context) {
 			return
 		}
 	}
+
 	goodsidint := easy.STI(goodsid)
 	if goodsidint == -1 {
 		response.SendResponse(c, "error happened", 500)
@@ -51,7 +57,9 @@ func Addstar(c *gin.Context) {
 
 	mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
 
+	//保存信息
 	easy.Returnstar(stuid, good.ID)
+
 	if ok {
 		response.SendResponse(c, "add successfully!", 200)
 	} else {

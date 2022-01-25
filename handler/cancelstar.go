@@ -26,6 +26,7 @@ func Cancelstar(c *gin.Context) {
 	stuid, ok := id.(string)
 
 	//mysql.DB.Model(&tables.Cart{}).Where("id=?",stuid)
+
 	mysql.DB.Where("id=?", stuid).Find(&cart)
 	re := easy.Delete(cart.Goodsid, goodsid)
 	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", id).Update("goodsid", re).Error

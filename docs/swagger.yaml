@@ -63,6 +63,26 @@ paths:
       - multipart/form-data
       description: '"新增一个商品时的api"'
       parameters:
+      - description: 标题
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: 分区
+        in: formData
+        name: zone
+        required: true
+        type: string
+      - description: 价格
+        in: formData
+        name: price
+        required: true
+        type: integer
+      - description: 详情
+        in: formData
+        name: summary
+        required: true
+        type: string
       - description: 商品图二进制文件
         in: formData
         name: avatar

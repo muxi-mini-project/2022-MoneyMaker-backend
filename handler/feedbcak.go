@@ -23,6 +23,7 @@ func Feedback(c *gin.Context) {
 	var good tables.Good
 	goodsstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsstr)
+
 	mysql.DB.Select("feed_back").Where("goods_id=?", goodsid).Find(&good)
 	if goodsid == -1 {
 		response.SendResponse(c, "error happened", 500)
@@ -30,5 +31,6 @@ func Feedback(c *gin.Context) {
 	}
 
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("feed_back", good.FeedBack+1)
+
 	response.SendResponse(c, "举报成功", 200)
 }

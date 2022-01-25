@@ -71,6 +71,34 @@
                 "summary": "\"上架商品\"",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "分区",
+                        "name": "zone",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "价格",
+                        "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "详情",
+                        "name": "summary",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
                         "type": "file",
                         "description": "商品图二进制文件",
                         "name": "avatar",
