@@ -79,8 +79,8 @@ func Router() *gin.Engine {
 		group.GET("/message", handler.Returnmsg) //ok
 	}
 	//购买后返回联系方式的接口
-	router.StaticFS("/images/way", http.Dir("C:\\source\\go\\miniproject\\goods\\way"))
+	router.StaticFS("/images/way", http.Dir("./goods\\way"))
 	//查看商品时，返回的图片
-	router.StaticFS("/images/avatar", http.Dir("C:\\source\\go\\miniproject\\goods\\avatar"))
+	router.StaticFS("/images/avatar", http.Dir("./goods\\avatar"))
 	return router
 }

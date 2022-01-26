@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UploadA(c *gin.Context, goodsid int) bool {
+func UploadAvatar(c *gin.Context, goodsid int) bool {
 	var way string
 
 	name := c.PostForm("name")
@@ -42,7 +42,7 @@ func UploadA(c *gin.Context, goodsid int) bool {
 	return true
 }
 
-func UploadW(c *gin.Context, goodsid int) bool {
+func UploadWay(c *gin.Context, goodsid int) bool {
 	var way string
 
 	name := c.PostForm("name")

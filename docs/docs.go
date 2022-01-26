@@ -37,7 +37,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Givecomment"
+                    "Login"
                 ],
                 "summary": "\"用户登录\"",
                 "parameters": [
@@ -53,13 +53,19 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"login successfully\"}",
+                        "description": "msg\":   \"登录成功\",\"token\": token,\"tips\": \"请保留token并将其放在之后的请求头中\"}",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "401": {
                         "description": "msg\":\"error happened\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"token生成错误\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -363,7 +369,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"img\":\"联系方式对应的url\"}",
+                        "description": "msg\":\"success\",\"way\":\"联系方式对应的url\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -465,7 +471,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\"}",
+                        "description": "msg\":\"cancel successfully\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -660,7 +666,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"add successfully or 你已经收藏过该商品了\"}",
+                        "description": "msg\":\"add successfully\" \"msg\":\"你已经收藏过该商品了\"}",
                         "schema": {
                             "type": "string"
                         }

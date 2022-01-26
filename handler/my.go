@@ -65,24 +65,25 @@ func Mycart(c *gin.Context) {
 	if cart.Goodsid == "" {
 		response.SendResponse(c, "nothing", 204)
 		return
-	} else {
-		goodsstrs := strings.Split(cart.Goodsid, ",")
+	}
 
-		for _, v := range goodsstrs {
-			goodsid := easy.STI(v)
+	goodsstrs := strings.Split(cart.Goodsid, ",")
 
-			if goodsid != -1 {
-				err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
+	for _, v := range goodsstrs {
+		goodsid := easy.STI(v)
 
-				if err != nil {
-					response.SendResponse(c, "error", 500)
-					return
-				}
+		if goodsid != -1 {
+			err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
 
-				goods = append(goods, good)
+			if err != nil {
+				response.SendResponse(c, "error", 500)
+				return
 			}
+
+			goods = append(goods, good)
 		}
 	}
+
 	c.JSON(200, gin.H{
 		"msg":   "success",
 		"goods": goods,

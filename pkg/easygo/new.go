@@ -22,7 +22,7 @@ func New(str string, id string) string {
 	return re
 }
 
-func NewT(str string, id string) (string, bool) {
+func NewSingle(str string, id string) (string, bool) {
 	var re string
 	strstr := strings.Split(str, ",")
 	//fmt.Println(strstr)

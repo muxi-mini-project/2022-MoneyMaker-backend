@@ -15,7 +15,7 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "goodsid"
-//@Success 200 {string} json{"msg":"success"}
+//@Success 200 {string} json{"msg":"cancel successfully"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/my/cancellation [post]
 func Cancelstar(c *gin.Context) {

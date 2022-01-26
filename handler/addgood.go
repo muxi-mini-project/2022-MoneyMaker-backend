@@ -65,13 +65,13 @@ func Addgood(c *gin.Context) {
 	good2.GoodsID = good1.GoodsID + 1
 
 	//存放图片到本地
-	oka := upload.UploadA(c, good2.GoodsID)
+	oka := upload.UploadAvatar(c, good2.GoodsID)
 	if !oka {
 		msga = "the avatar failed to upload!"
 	}
 
 	//存放图片到本地
-	okw := upload.UploadW(c, good2.GoodsID)
+	okw := upload.UploadWay(c, good2.GoodsID)
 	if !okw {
 		msgw = "the way failed to upload!"
 	}

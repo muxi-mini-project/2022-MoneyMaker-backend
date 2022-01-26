@@ -18,12 +18,13 @@ type user struct {
 
 //@Summary "用户登录"
 //@Description "登录的api"
-//@Tags Givecomment
+//@Tags Login
 //@Accept application/json
 //@Produce application/json
 //@Param user body user true "用户信息"
-//@Success 200 {string} json{"msg":"login successfully"}
+//@Success 200 {string} json{""msg":   "登录成功","token": token,"tips": "请保留token并将其放在之后的请求头中"}
 //@Failure 401 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"token生成错误"}
 //@Router /money/entrance [post]
 func Login(c *gin.Context) {
 	var user user
@@ -38,7 +39,6 @@ func Login(c *gin.Context) {
 		//用户认证信息错误返回401状态码
 		c.JSON(401, gin.H{
 			"error": "密码或学号错误",
-			"msg":   "如果账号密码无误请多次尝试登录",
 		})
 		return
 	}
@@ -51,8 +51,9 @@ func Login(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{
-		"msg":   "登录成功,请保留token并将其放在之后的请求头中",
+		"msg":   "登录成功",
 		"token": token,
+		"tips":  "请保留token并将其放在之后的请求头中",
 	})
 }
 

@@ -24,7 +24,7 @@ func Search(c *gin.Context) {
 	//根据举报次数与评分进行优先返回
 	var goods []tables.Good
 
-	page := c.Query("page")
+	page := c.DefaultQuery("page", "1")
 	num := easy.STI(page)
 	content := c.Request.FormValue("content")
 	err := mysql.DB.Order("feed_back asc").Order("scores desc").Where(fmt.Sprintf(`summary like "%%%s%%"`, content)).Find(&goods).Error

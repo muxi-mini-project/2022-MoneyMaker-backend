@@ -15,7 +15,7 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "goodsid"
-//@Success 200 {string} json{"msg":"success","img":"联系方式对应的url"}
+//@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {

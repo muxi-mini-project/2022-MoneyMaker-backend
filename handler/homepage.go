@@ -21,7 +21,7 @@ import (
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
 
-	page := c.Query("page")
+	page := c.DefaultQuery("page", "1")
 	num := easy.STI(page)
 	err := mysql.DB.Order("feed_back desc").Order("scores desc").Find(&goods).Error
 

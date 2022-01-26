@@ -126,7 +126,7 @@ func Givecomment(c *gin.Context) {
 		return
 	}
 
-	response.SendResponse(c, "success", 200)
+	response.SendResponse(c, "give successfully", 200)
 }
 
 func Average(c *gin.Context, re []tables.Comment, goodsid string) string {

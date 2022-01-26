@@ -9,7 +9,7 @@ type User struct {
 	Buygoods string `gorm:"buygoods"`
 }
 
-//下架了，就都差看不到了
+//下架了
 type Good struct {
 	GoodsID   int     `gorm:"goods_id"`
 	Title     string  `gorm:"title"`
