@@ -83,7 +83,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "New goods"
+                    "Goods"
                 ],
                 "summary": "\"上架商品\"",
                 "parameters": [

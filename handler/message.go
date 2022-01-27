@@ -18,7 +18,7 @@ import (
 //@Router /money/message [get]
 func Returnmsg(c *gin.Context) {
 	var msgs []tables.Message
-	id, exists := c.Get("id")
+	id, exists := c.MustGet("id").(string)
 	if !exists {
 		response.SendResponse(c, "error happened", 500)
 		return

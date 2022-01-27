@@ -52,10 +52,9 @@ func Mycart(c *gin.Context) {
 		good  tables.Good
 	)
 
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
+	stuid, exists := c.MustGet("id").(string)
 
-	if !ok || !exists {
+	if !exists {
 		response.SendResponse(c, "error happened!", 500)
 		return
 	}
@@ -67,9 +66,9 @@ func Mycart(c *gin.Context) {
 		return
 	}
 
-	goodsstrs := strings.Split(cart.Goodsid, ",")
+	goodsStrs := strings.Split(cart.Goodsid, ",")
 
-	for _, v := range goodsstrs {
+	for _, v := range goodsStrs {
 		goodsid := easy.STI(v)
 
 		if goodsid != -1 {

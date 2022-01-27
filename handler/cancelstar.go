@@ -21,17 +21,16 @@ import (
 func Cancelstar(c *gin.Context) {
 	var cart tables.Cart
 	//var str string
-	id, exists := c.Get("id")
+	stuid, exists := c.MustGet("id").(string)
 	goodsid := c.Query("goodsid")
-	stuid, ok := id.(string)
 
 	//mysql.DB.Model(&tables.Cart{}).Where("id=?",stuid)
 
 	mysql.DB.Where("id=?", stuid).Find(&cart)
 	re := easy.Delete(cart.Goodsid, goodsid)
-	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", id).Update("goodsid", re).Error
+	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 
-	if !ok || !exists || err != nil {
+	if !exists || err != nil {
 		response.SendResponse(c, "error happened!", 500)
 	}
 

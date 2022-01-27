@@ -27,11 +27,10 @@ func Buy(c *gin.Context) {
 	)
 
 	goodsidstring := c.Query("goodsid")
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
+	stuid, exists := c.MustGet("id").(string)
 	goodsid := easy.STI(goodsidstring)
 
-	if !exists || !ok || goodsid == -1 {
+	if !exists || goodsid == -1 {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}

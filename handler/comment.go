@@ -94,7 +94,7 @@ func Givecomment(c *gin.Context) {
 	)
 
 	goodsid := c.Query("goodsid")
-	id, exists := c.Get("id")
+	userid, exists := c.MustGet("id").(string)
 
 	if err := c.ShouldBindJSON(&des); err != nil || !exists {
 		response.SendResponse(c, "error happened", 500)
@@ -104,7 +104,6 @@ func Givecomment(c *gin.Context) {
 	//获取当前时间
 	tm := time.Now().Format("2006-01-02 15:04:05")
 
-	userid, ok := id.(string)
 	cmt.ID = userid
 	cmt.GoodsID = easy.STI(goodsid)
 	cmt.Givetime = tm
@@ -112,7 +111,7 @@ func Givecomment(c *gin.Context) {
 	cmt.Comment = des.Comment
 	err := mysql.DB.Create(&cmt).Error
 
-	if cmt.GoodsID == -1 || !ok || err != nil {
+	if cmt.GoodsID == -1 || err != nil {
 		//fmt.Println("2", cmt.GoodsID, err, ok)
 		response.SendResponse(c, "error happened", 500)
 		return
@@ -139,8 +138,8 @@ func Average(c *gin.Context, re []tables.Comment, goodsid string) string {
 	if len(re) == 0 {
 		good.Scores = 0
 	}
-	for i := 0; i < len(re); i++ {
-		sum += re[i].Score
+	for _, v := range re {
+		sum += v.Score
 	}
 	good.Scores = float64(sum) / float64(len(re))
 

@@ -17,7 +17,7 @@ CREATE TABLE goods(
     title VARCHAR(50),
     price INT ,
     goodszone VARCHAR(50),
-    summary TEXT,
+    summary VARCHAR(100),
     scores FLOAT,
     goodsin VARCHAR(5) DEFAULT "yes",
     way VARCHAR(100),

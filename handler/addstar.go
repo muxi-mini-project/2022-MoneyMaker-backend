@@ -24,13 +24,13 @@ func Addstar(c *gin.Context) {
 		cart tables.Cart
 		re   string
 		good tables.Good
+		ok   bool
 	)
 
-	id, exists := c.Get("id")
+	stuid, exists := c.MustGet("id").(string)
 	goodsid := c.Query("goodsid")
-	stuid, ok := id.(string)
 
-	if !exists || !ok {
+	if !exists {
 		response.SendResponse(c, "error happened", 500)
 	}
 

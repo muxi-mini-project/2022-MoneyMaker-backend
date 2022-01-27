@@ -20,7 +20,7 @@ type Tmp struct {
 
 //@Summary "上架商品"
 //@Description "新增一个商品时的api"
-//@Tags New goods
+//@Tags Goods
 //@Accept multipart/form-data
 //@Produce application/json
 //@Param title formData string true "标题"
@@ -41,9 +41,8 @@ func Addgood(c *gin.Context) {
 		msgw  string
 	)
 
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
-	if !exists || !ok {
+	stuid, exists := c.MustGet("id").(string)
+	if !exists {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}

@@ -31,9 +31,8 @@ func UnFinish(c *gin.Context) {
 	var strbuy []tables.Good
 	var strsell []Two
 	var two Two
-	idstr, exists := c.Get("id")
-	id, ok := idstr.(string)
-	if !exists || !ok {
+	id, exists := c.MustGet("id").(string)
+	if !exists {
 		//fmt.Println("1", exists, ok)
 		response.SendResponse(c, "error", 500)
 		return
@@ -90,10 +89,9 @@ func Finsh(c *gin.Context) {
 
 	//点击完成之后把这个购买者从buyer中删去，以及goodsid从uesr中删除,有多个的情况下，则只删除一个
 	goodsid := c.Query("goodsid")
-	strid, exists := c.Get("id")
-	id, ok := strid.(string)
+	id, exists := c.MustGet("id").(string)
 
-	if !exists || !ok {
+	if !exists {
 		response.SendResponse(c, "error", 500)
 		return
 	}

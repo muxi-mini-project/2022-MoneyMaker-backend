@@ -23,7 +23,7 @@ func UploadAvatar(c *gin.Context, goodsid int) bool {
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
-	way = "C:\\source\\go\\miniroject\\goods\\avatar" + strconv.Itoa(goodsid) + ".jpg"
+	way = "./goods/avatar" + strconv.Itoa(goodsid) + ".jpg"
 	tmp, err := os.Create(way)
 
 	if err != nil {
@@ -56,7 +56,7 @@ func UploadWay(c *gin.Context, goodsid int) bool {
 	//filename := header.Filename
 	//fmt.Println(file, err, filename)
 	//以goodsid作为名字
-	way = "C:\\source\\go\\miniroject\\goods\\way" + strconv.Itoa(goodsid) + ".jpg"
+	way = "./goods\\way" + strconv.Itoa(goodsid) + ".jpg"
 
 	tmp, err := os.Create(way)
 	if err != nil {
