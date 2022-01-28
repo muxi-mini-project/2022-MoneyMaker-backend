@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -14,7 +15,7 @@ import (
 //@Tags Add
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品的编号"
 //@Success 200 {string} json{"msg":"add successfully" "msg":"你已经收藏过该商品了"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/new_star [patch]
@@ -34,7 +35,8 @@ func Addstar(c *gin.Context) {
 		response.SendResponse(c, "error happened", 500)
 	}
 
-	mysql.DB.Where("id=?", stuid).Find(&cart)
+	//mysql.DB.Where("id=?", stuid).Find(&cart)
+	cart = model.GetOrderCart(stuid)
 	if cart.Goodsid != "" {
 		re, ok = easy.NewSingle(cart.Goodsid, goodsid)
 	} else {
@@ -49,13 +51,14 @@ func Addstar(c *gin.Context) {
 		}
 	}
 
-	goodsidint := easy.STI(goodsid)
-	if goodsidint == -1 {
+	goodsidInt := easy.STI(goodsid)
+	if goodsidInt == -1 {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}
 
-	mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
+	//mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
+	good = model.GetOrderGood(goodsidInt)
 
 	//保存信息
 	easy.Returnstar(stuid, good.ID)

@@ -14,7 +14,7 @@ import (
 //@Tags Homepage
 //@Accept application/json
 //@Produce application/json
-//@Param page query string true "page"
+//@Param page query string true "页码"
 //@Success 200 {string} json{"msg":"success","infor":[]tables.Good}
 //@Success 500 {string} json{"msg":"error"}
 //@Router /money/homepage [get]

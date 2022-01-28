@@ -15,8 +15,8 @@ import (
 //@Tags Search
 //@Accept application/json
 //@Produce application/json
-//@Param content formData string true "content"
-//@Param page query string true "page"
+//@Param content formData string true "搜索框输入的内容"
+//@Param page query string true "页码"
 //@Success 200 {string} json{"msg":"search successfully","infor":[]tables.Good}
 //@Success 204 {string} json{"msg":"find nothing"}
 //@Router /money/search [post]

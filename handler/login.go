@@ -3,8 +3,6 @@ package handler
 import (
 	model "miniproject/model/getstu"
 	"miniproject/model/mysql"
-	"miniproject/model/tables"
-	"miniproject/pkg/avatar"
 	"miniproject/pkg/response"
 	"miniproject/pkg/token"
 
@@ -43,7 +41,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	Create(user.ID, stu.User.Name)
+	mysql.Create(user.ID, stu.User.Name)
 
 	token, err := token.GenerateToken(user.ID)
 	if err != nil {
@@ -55,26 +53,4 @@ func Login(c *gin.Context) {
 		"token": token,
 		"tips":  "请保留token并将其放在之后的请求头中",
 	})
-}
-
-//登录成功初始化这个用户的信息
-func Create(id string, name string) {
-	var user tables.User
-	//不存在就会报错
-	mysql.DB.Where("id=?", id).Find(&user)
-	avatar := avatar.GetAvatar()
-	if user.ID != id {
-		mysql.DB.Model(&tables.User{}).Create(map[string]interface{}{
-			"id":       id,
-			"avatar":   avatar, //随机分配头像
-			"nickname": name,
-			"buygoods": "",
-		})
-
-		//新建一个空的购物车
-		mysql.DB.Model(&tables.Cart{}).Create(map[string]interface{}{
-			"id": id})
-
-	}
-
 }

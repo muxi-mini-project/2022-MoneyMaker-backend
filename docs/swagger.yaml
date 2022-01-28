@@ -117,13 +117,13 @@ paths:
       - application/json
       description: '"用户做出评价，点击评价时的api"'
       parameters:
-      - description: comment
+      - description: 评论
         in: body
         name: comment
         required: true
         schema:
           $ref: '#/definitions/handler.Description'
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -148,7 +148,7 @@ paths:
       - application/json
       description: '"商品详情页点击评价时的api "scores":所有分值情况, "infor":"评论信息以及学号""'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -173,7 +173,7 @@ paths:
       - application/json
       description: '"下架商品的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -198,9 +198,14 @@ paths:
       - application/json
       description: '"举报的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
+        required: true
+        type: string
+      - description: 原因，多个reason以逗号隔开
+        in: formData
+        name: reason
         required: true
         type: string
       produces:
@@ -223,7 +228,7 @@ paths:
       - application/json
       description: '"点击进入商品详情页的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -248,7 +253,7 @@ paths:
       - application/json
       description: '"点击购买时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -273,7 +278,7 @@ paths:
       - application/json
       description: '"order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"'
       parameters:
-      - description: page
+      - description: 页码
         in: query
         name: page
         required: true
@@ -315,7 +320,7 @@ paths:
       - application/json
       description: '"在购物车里取消收藏的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -382,7 +387,7 @@ paths:
       - application/json
       description: '"点击确认完成时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -444,7 +449,7 @@ paths:
       - application/json
       description: '"添加至购物车时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品的编号
         in: query
         name: goodsid
         required: true
@@ -469,12 +474,12 @@ paths:
       - application/json
       description: '"order=1->返回前十个商品的内容，summary不需要展示出来-》在商品详情页里,搜索的api"'
       parameters:
-      - description: content
+      - description: 搜索框输入的内容
         in: formData
         name: content
         required: true
         type: string
-      - description: page
+      - description: 页码
         in: query
         name: page
         required: true

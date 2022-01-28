@@ -161,7 +161,7 @@ var doc = `{
                 "summary": "\"用户对某个商品的评论\"",
                 "parameters": [
                     {
-                        "description": "comment",
+                        "description": "评论",
                         "name": "comment",
                         "in": "body",
                         "required": true,
@@ -171,7 +171,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -209,7 +209,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -247,7 +247,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -285,9 +285,16 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "原因，多个reason以逗号隔开",
+                        "name": "reason",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -323,7 +330,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -361,7 +368,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -399,7 +406,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "page",
+                        "description": "页码",
                         "name": "page",
                         "in": "query",
                         "required": true
@@ -463,7 +470,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -565,7 +572,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -658,7 +665,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品的编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -696,14 +703,14 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "content",
+                        "description": "搜索框输入的内容",
                         "name": "content",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "page",
+                        "description": "页码",
                         "name": "page",
                         "in": "query",
                         "required": true

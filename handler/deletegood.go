@@ -15,13 +15,14 @@ import (
 //@Tags Delete
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} {"msg":"delete successfully"}
 //@Failure 500 {string} {"msg":"error happened"}
 //@Router /money/goods/deletion [delete]
 func Deletegood(c *gin.Context) {
 	goodsstr := c.Query("goodsid")
 	goodsid := easy.STI(goodsstr)
+
 	err := mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("goodsin", "no").Error
 
 	if goodsid == -1 || err != nil {

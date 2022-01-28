@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"miniproject/model/mysql"
+	"miniproject/model"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
 	"miniproject/pkg/response"
@@ -14,7 +14,7 @@ import (
 //@Tags Buy
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/goods/shopping [get]
@@ -35,8 +35,8 @@ func Buy(c *gin.Context) {
 		return
 	}
 
-	mysql.DB.Select("buyer", "way", "id").Where("goods_id=?", goodsid).Find(&good)
-
+	//mysql.DB.Select("buyer", "way", "id").Where("goods_id=?", goodsid).Find(&good)
+	good = model.GetOrderGood(goodsid)
 	//存储消息通知
 	easy.Returnbuy(stuid, good.ID)
 
@@ -46,12 +46,14 @@ func Buy(c *gin.Context) {
 		strstr = strstr + stuid
 	}
 
-	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
-	//mysql.DB.Where("goods_id=?", goodsid).Find(&good)
-	//fmt.Println(good)
+	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
+	err := model.UpdateGoodBuyer(goodsid, strstr)
+	if err != nil {
+		response.SendResponse(c, "error happened", 500)
+		return
+	}
 
-	//用户购买后把商品id存入buygoods
-	mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Find(&user)
+	user = model.GetOrderUser(stuid)
 	strstr = ""
 	if user.Buygoods != "" {
 		strstr = easy.New(user.Buygoods, goodsidstring)
@@ -60,7 +62,12 @@ func Buy(c *gin.Context) {
 	}
 
 	//re := easy.New(user.Buygoods, goodsidstring)
-	mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
+	//mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
+	err = model.UpdateBuygoods(stuid, strstr)
+	if err != nil {
+		response.SendResponse(c, "error happened", 500)
+		return
+	}
 
 	//Way存放图片对应的地址，再使用staticfs打开
 

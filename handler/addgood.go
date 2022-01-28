@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -47,14 +48,16 @@ func Addgood(c *gin.Context) {
 		return
 	}
 
-	err1 := mysql.DB.Model(&tables.Good{}).Last(&good1).Error
+	//err := mysql.DB.Model(&tables.Good{}).Last(&good1).Error
+	good1, err := model.GetLastRecord()
+
 	summary := c.PostForm("title")
 	zone := c.PostForm("zone")
 	price := c.PostForm("price")
 	title := c.PostForm("title")
 
 	tmp := easy.STI(price)
-	if tmp == -1 || err1 != nil {
+	if tmp == -1 || err != nil {
 		response.SendResponse(c, "error happened", 500)
 		return
 	}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -32,7 +33,7 @@ type Description struct {
 //@Tags Comment
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} {"infor":[]tables.Comment,"score":All}
 //@Failure 500 {string} json{"msg":"err"}
 //@Router /money/goods/comments [get]
@@ -48,8 +49,9 @@ func Getcomment(c *gin.Context) {
 		return
 	}
 
-	mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
-	//fmt.Println(re)
+	//mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
+	re = model.GetGoodComment(goodsid)
+
 	for i := 0; i < len(re); i++ {
 		all.Sum += re[i].Score
 		switch re[i].Score {
@@ -81,8 +83,8 @@ func Getcomment(c *gin.Context) {
 //@Tags Givecomment
 //@Accept application/json
 //@Produce application/json
-//@Param comment body Description true "comment"
-//@Param goodsid query string true "goodsid"
+//@Param comment body Description true "评论"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"give successfully"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/goods/comment [post]
@@ -119,6 +121,7 @@ func Givecomment(c *gin.Context) {
 
 	//更新商品的平均分,得在创建一条新评论之后
 	mysql.DB.Select("score").Where("goods_id=?", goodsid).Find(&re)
+
 	if str := Average(c, re, goodsid); str != "" {
 		//fmt.Println("3", str)
 		response.SendResponse(c, "error happened", 500)

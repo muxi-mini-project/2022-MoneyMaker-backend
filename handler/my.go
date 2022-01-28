@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -27,6 +28,7 @@ func Mygoods(c *gin.Context) {
 		return
 	}
 	mysql.DB.Where("id=?", stuid).Find(&goods)
+
 	for i := 0; i < len(goods); i++ {
 		goods[i].Way = ""
 	}
@@ -59,7 +61,8 @@ func Mycart(c *gin.Context) {
 		return
 	}
 
-	mysql.DB.Where("id=?", stuid).Find(&cart)
+	//mysql.DB.Where("id=?", stuid).Find(&cart)
+	cart = model.GetOrderCart(stuid)
 
 	if cart.Goodsid == "" {
 		response.SendResponse(c, "nothing", 204)
@@ -72,13 +75,7 @@ func Mycart(c *gin.Context) {
 		goodsid := easy.STI(v)
 
 		if goodsid != -1 {
-			err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
-
-			if err != nil {
-				response.SendResponse(c, "error", 500)
-				return
-			}
-
+			model.GetOrderGood(goodsid)
 			goods = append(goods, good)
 		}
 	}
@@ -100,13 +97,14 @@ func Mycart(c *gin.Context) {
 func Mymessage(c *gin.Context) {
 	var user tables.User
 
-	id, exists := c.Get("id")
+	id, exists := c.MustGet("id").(string)
 	if !exists {
 		response.SendResponse(c, "return error!", 500)
 		return
 	}
 
-	mysql.DB.Where("id=?", id).Find(&user)
+	//mysql.DB.Where("id=?", id).Find(&user)
+	user = model.GetOrderUser(id)
 
 	user.Buygoods = ""
 	c.JSON(200, gin.H{

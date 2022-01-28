@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"fmt"
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -25,12 +25,15 @@ type Two struct {
 //@Failure 500 {string} json{"error happened"}
 //@Router /money/my/goods/unfish [get]
 func UnFinish(c *gin.Context) {
-	var goods []tables.Good
-	var user tables.User
-	var good tables.Good
-	var strbuy []tables.Good
-	var strsell []Two
-	var two Two
+	var (
+		goods   []tables.Good
+		user    tables.User
+		good    tables.Good
+		strbuy  []tables.Good
+		strsell []Two
+		two     Two
+	)
+
 	id, exists := c.MustGet("id").(string)
 	if !exists {
 		//fmt.Println("1", exists, ok)
@@ -40,29 +43,27 @@ func UnFinish(c *gin.Context) {
 	//确认完成
 	//获取我已购买我发布的商品的用户的id,可能不止一个商品,mysell
 	mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id", "buyer").Where("id=?", id).Find(&goods)
+
 	for _, v := range goods {
 		buyer := strings.Split(v.Buyer, ",")
 		two.Buyer = buyer
 		two.Good = v
 		strsell = append(strsell, two)
-		fmt.Println("1", buyer)
 	}
 
 	//评价
 	mysql.DB.Where("id=?", id).Find(&user)
 	hasbuy := strings.Split(user.Buygoods, ",")
-	//fmt.Println(hasbuy)
+
 	for _, v := range hasbuy {
 		num := easy.STI(v)
 		if num == -1 {
-			//fmt.Println("2", num)
 			response.SendResponse(c, "error", 500)
 			return
 		} else {
 			mysql.DB.Model(&tables.Good{}).Select("price", "title", "goods_id").Where("goods_id=?", num).Find(&good)
 			strbuy = append(strbuy, good)
 		}
-		fmt.Println("2")
 	}
 	c.JSON(200, gin.H{
 		"msg":     "success",
@@ -76,7 +77,7 @@ func UnFinish(c *gin.Context) {
 //@Tags Finish trade
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"success"}
 //@Failure 500 "error happened"
 //@Router /money/my/goods/finish [get]
@@ -103,16 +104,18 @@ func Finsh(c *gin.Context) {
 	num := easy.STI(goodsid)
 
 	if num == -1 {
-		fmt.Println("2", num)
 		response.SendResponse(c, "error", 500)
 		return
 	}
-	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", re)
+	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", re)
+	model.UpdateGoodBuyer(num, re)
 
 	re = ""
 	re = easy.Delete(user.Buygoods, goodsid)
 
-	mysql.DB.Model(&tables.User{}).Where("id=?", id).Update("buygoods", re)
+	//mysql.DB.Model(&tables.User{}).Where("id=?", id).Update("buygoods", re)
+	model.UpdateBuygoods(id, re)
+
 	c.JSON(200, gin.H{
 		"msg": "success",
 	})

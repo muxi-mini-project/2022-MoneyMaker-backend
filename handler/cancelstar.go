@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -14,7 +15,7 @@ import (
 //@Tags Cancel
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"cancel successfully"}
 //@Failure 500 {string} json{"msg":"error happened"}
 //@Router /money/my/cancellation [post]
@@ -24,12 +25,11 @@ func Cancelstar(c *gin.Context) {
 	stuid, exists := c.MustGet("id").(string)
 	goodsid := c.Query("goodsid")
 
-	//mysql.DB.Model(&tables.Cart{}).Where("id=?",stuid)
-
-	mysql.DB.Where("id=?", stuid).Find(&cart)
+	//mysql.DB.Where("id=?", stuid).Find(&cart)
+	cart = model.GetOrderCart(stuid)
 	re := easy.Delete(cart.Goodsid, goodsid)
-	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 
+	err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 	if !exists || err != nil {
 		response.SendResponse(c, "error happened!", 500)
 	}

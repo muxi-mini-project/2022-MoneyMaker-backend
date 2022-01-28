@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"miniproject/config"
 	"miniproject/model/tables"
+	"miniproject/pkg/avatar"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -56,4 +57,24 @@ func Init() {
 
 	DataInit()
 
+}
+
+//登录成功初始化这个用户的信息
+func Create(id string, name string) {
+	var user tables.User
+	//不存在就会报错
+	DB.Where("id=?", id).Find(&user)
+	avatar := avatar.GetAvatar()
+	if user.ID != id {
+		DB.Model(&tables.User{}).Create(map[string]interface{}{
+			"id":       id,
+			"avatar":   avatar, //随机分配头像
+			"nickname": name,
+			"buygoods": "",
+		})
+
+		//新建一个空的购物车
+		DB.Model(&tables.Cart{}).Create(map[string]interface{}{
+			"id": id})
+	}
 }
