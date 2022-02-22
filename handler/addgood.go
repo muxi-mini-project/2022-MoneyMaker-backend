@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"log"
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -20,7 +22,7 @@ type Tmp struct {
 
 //@Summary "上架商品"
 //@Description "新增一个商品时的api"
-//@Tags New goods
+//@Tags Good
 //@Accept multipart/form-data
 //@Produce application/json
 //@Param title formData string true "标题"
@@ -41,37 +43,41 @@ func Addgood(c *gin.Context) {
 		msgw  string
 	)
 
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
-	if !exists || !ok {
-		response.SendResponse(c, "error happened", 500)
+	stuid, exists := c.MustGet("id").(string)
+	if !exists {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("get错误")
 		return
 	}
 
-	err1 := mysql.DB.Model(&tables.Good{}).Last(&good1).Error
-	summary := c.PostForm("title")
+	//err := mysql.DB.Model(&tables.Good{}).Last(&good1).Error
+	good1, err := model.GetLastRecord()
+
+	summary := c.PostForm("summary")
 	zone := c.PostForm("zone")
 	price := c.PostForm("price")
 	title := c.PostForm("title")
 
 	tmp := easy.STI(price)
-	if tmp == -1 || err1 != nil {
-		response.SendResponse(c, "error happened", 500)
+	if tmp == -1 || err != nil {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("STI错误")
 		return
 	}
 
 	good2.ID = stuid
 	//获取到当前的最大值之后再加一即可
 	good2.GoodsID = good1.GoodsID + 1
+	//fmt.Println(good1.GoodsID, good2.GoodsID)
 
 	//存放图片到本地
-	oka := upload.UploadA(c, good2.GoodsID)
+	oka := upload.UploadAvatar(c, good2.GoodsID)
 	if !oka {
 		msga = "the avatar failed to upload!"
 	}
 
 	//存放图片到本地
-	okw := upload.UploadW(c, good2.GoodsID)
+	okw := upload.UploadWay(c, good2.GoodsID)
 	if !okw {
 		msgw = "the way failed to upload!"
 	}
@@ -88,8 +94,9 @@ func Addgood(c *gin.Context) {
 	good2.Title = title
 
 	//直接存url
-	good2.Avatar = "localhost:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
-	good2.Way = "localhost:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Avatar = "119.3.133.235:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Way = "119.3.133.235:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Goodsin = "yes"
 
 	mysql.DB.Model(&tables.Good{}).Create(&good2)
 

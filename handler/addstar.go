@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"log"
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -11,12 +13,12 @@ import (
 
 //@Summary "新增收藏"
 //@Description "添加至购物车时的api"
-//@Tags Add
+//@Tags Star
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
-//@Success 200 {string} json{"msg":"add successfully or 你已经收藏过该商品了"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Param goodsid query string true "商品的编号"
+//@Success 200 {string} json{"msg":"add successfully" "msg":"你已经收藏过该商品了"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/new_star [patch]
 func Addstar(c *gin.Context) {
 	//用户收藏后在cart里就会新增这个商品的goodsid
@@ -24,19 +26,20 @@ func Addstar(c *gin.Context) {
 		cart tables.Cart
 		re   string
 		good tables.Good
+		ok   bool
 	)
 
-	id, exists := c.Get("id")
+	stuid, exists := c.MustGet("id").(string)
 	goodsid := c.Query("goodsid")
-	stuid, ok := id.(string)
 
-	if !exists || !ok {
+	if !exists {
 		response.SendResponse(c, "error happened", 500)
 	}
 
-	mysql.DB.Where("id=?", stuid).Find(&cart)
+	//mysql.DB.Where("id=?", stuid).Find(&cart)
+	cart = model.GetOrderCart(stuid)
 	if cart.Goodsid != "" {
-		re, ok = easy.NewT(cart.Goodsid, goodsid)
+		re, ok = easy.NewSingle(cart.Goodsid, goodsid)
 	} else {
 		re = re + goodsid
 	}
@@ -44,18 +47,21 @@ func Addstar(c *gin.Context) {
 	if ok {
 		err := mysql.DB.Model(&tables.Cart{}).Where("id=?", stuid).Update("goodsid", re).Error
 		if err != nil {
-			response.SendResponse(c, "error happened", 500)
+			response.SendResponse(c, "error happened in server", 500)
+			log.Println(err)
 			return
 		}
 	}
 
-	goodsidint := easy.STI(goodsid)
-	if goodsidint == -1 {
-		response.SendResponse(c, "error happened", 500)
+	goodsidInt := easy.STI(goodsid)
+	if goodsidInt == -1 {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("STI错误")
 		return
 	}
 
-	mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
+	//mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
+	good = model.GetOrderGood(goodsidInt)
 
 	//保存信息
 	easy.Returnstar(stuid, good.ID)

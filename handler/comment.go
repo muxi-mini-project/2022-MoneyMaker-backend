@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"log"
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -32,7 +34,7 @@ type Description struct {
 //@Tags Comment
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} {"infor":[]tables.Comment,"score":All}
 //@Failure 500 {string} json{"msg":"err"}
 //@Router /money/goods/comments [get]
@@ -48,8 +50,9 @@ func Getcomment(c *gin.Context) {
 		return
 	}
 
-	mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
-	//fmt.Println(re)
+	//mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
+	re = model.GetGoodComment(goodsid)
+
 	for i := 0; i < len(re); i++ {
 		all.Sum += re[i].Score
 		switch re[i].Score {
@@ -78,13 +81,13 @@ func Getcomment(c *gin.Context) {
 
 //@Summary "用户对某个商品的评论"
 //@Description "用户做出评价，点击评价时的api"
-//@Tags Givecomment
+//@Tags Comment
 //@Accept application/json
 //@Produce application/json
-//@Param comment body Description true "comment"
-//@Param goodsid query string true "goodsid"
+//@Param comment body Description true "评论"
+//@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"give successfully"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
 	var (
@@ -94,17 +97,17 @@ func Givecomment(c *gin.Context) {
 	)
 
 	goodsid := c.Query("goodsid")
-	id, exists := c.Get("id")
+	userid, exists := c.MustGet("id").(string)
 
 	if err := c.ShouldBindJSON(&des); err != nil || !exists {
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("err")
 		return
 	}
 
 	//获取当前时间
 	tm := time.Now().Format("2006-01-02 15:04:05")
 
-	userid, ok := id.(string)
 	cmt.ID = userid
 	cmt.GoodsID = easy.STI(goodsid)
 	cmt.Givetime = tm
@@ -112,38 +115,42 @@ func Givecomment(c *gin.Context) {
 	cmt.Comment = des.Comment
 	err := mysql.DB.Create(&cmt).Error
 
-	if cmt.GoodsID == -1 || !ok || err != nil {
+	if cmt.GoodsID == -1 || err != nil {
 		//fmt.Println("2", cmt.GoodsID, err, ok)
-		response.SendResponse(c, "error happened", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
 		return
 	}
 
 	//更新商品的平均分,得在创建一条新评论之后
 	mysql.DB.Select("score").Where("goods_id=?", goodsid).Find(&re)
-	if str := Average(c, re, goodsid); str != "" {
-		//fmt.Println("3", str)
-		response.SendResponse(c, "error happened", 500)
+
+	if ok := Average(c, re, goodsid); !ok {
+
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(ok)
+
 		return
 	}
 
-	response.SendResponse(c, "success", 200)
+	response.SendResponse(c, "give successfully", 200)
 }
 
-func Average(c *gin.Context, re []tables.Comment, goodsid string) string {
+func Average(c *gin.Context, re []tables.Comment, goodsid string) bool {
 	var good tables.Good
 	var sum = 0
 	id := easy.STI(goodsid)
 	if id == -1 {
-		return "error"
+		return false
 	}
 	if len(re) == 0 {
 		good.Scores = 0
 	}
-	for i := 0; i < len(re); i++ {
-		sum += re[i].Score
+	for _, v := range re {
+		sum += v.Score
 	}
 	good.Scores = float64(sum) / float64(len(re))
 
 	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", id).Update("scores", good.Scores)
-	return ""
+	return true
 }

@@ -7,21 +7,22 @@ USE miniproject;
 CREATE TABLE users(
     id VARCHAR(10) PRIMARY KEY,
     nickname VARCHAR(20),
-    avatar TEXT,
-    buygoods TEXT
+    avatar VARCHAR(100),
+    buygoods TEXT,
+    password VARCHAR(20)
 );
 
 CREATE TABLE goods(
     goods_id INT PRIMARY KEY AUTO_INCREMENT,
     id VARCHAR(10),
-    title TEXT,
+    title VARCHAR(50),
     price INT ,
-    goodszone TEXT,
-    summary TEXT,
+    goodszone VARCHAR(50),
+    summary VARCHAR(100),
     scores FLOAT,
     goodsin VARCHAR(5) DEFAULT "yes",
-    way TEXT,
-    avatar TEXT,
+    way VARCHAR(100),
+    avatar VARCHAR(100),
     buyer TEXT ,
     feed_back INT DEFAULT 0,
     CONSTRAINT first
@@ -40,8 +41,8 @@ CREATE TABLE comments(
     id VARCHAR(10),
     score INT,
     goods_id INT,
-    comment TEXT,
-    givetime TEXT,
+    comment VARCHAR(100),
+    givetime VARCHAR(20),
     CONSTRAINT third
     FOREIGN KEY(id) REFERENCES users(id),
     CONSTRAINT forth
@@ -52,5 +53,5 @@ CREATE TABLE messages(
     id INT PRIMARY KEY AUTO_INCREMENT,
     buyer VARCHAR(10),
     my VARCHAR(10),
-    msg TEXT
+    msg VARCHAR(30)
 )

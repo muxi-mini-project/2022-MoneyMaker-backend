@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -10,23 +11,24 @@ import (
 )
 
 //@Summary "主页内容"
-//@Description "order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"
-//@Tags Homepage
+//@Description "主页的api"
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
-//@Param page query string true "page"
+//@Param page query string true "页码"
 //@Success 200 {string} json{"msg":"success","infor":[]tables.Good}
-//@Success 500 {string} json{"msg":"error"}
+//@Success 500 {string} json{"msg":"error happened in server"}
 //@Router /money/homepage [get]
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
 
-	page := c.Query("page")
+	page := c.DefaultQuery("page", "1")
 	num := easy.STI(page)
-	err := mysql.DB.Order("feed_back desc").Order("scores desc").Find(&goods).Error
+	err := mysql.DB.Order("feed_back desc").Order("scores desc").Where("goodsin=?", "yes").Find(&goods).Error
 
 	if err != nil || num == -1 {
-		response.SendResponse(c, "error", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err, num)
 		return
 	}
 

@@ -21,7 +21,7 @@ definitions:
     - id
     - password
     type: object
-host: localhost:8080
+host: 119.3.133.235:8080
 info:
   contact:
     email: 2105753640@qq.com
@@ -37,7 +37,7 @@ paths:
       - application/json
       description: '"登录的api"'
       parameters:
-      - description: 用户信息
+      - description: id 学号 password 密码进行base64加密后的字符串
         in: body
         name: user
         required: true
@@ -47,16 +47,20 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"login successfully"}
+          description: 'msg":   "登录成功","token": token,"tips": "请保留token并将其放在之后的请求头中"}'
           schema:
             type: string
         "401":
-          description: msg":"error happened"}
+          description: msg":"unauthorization"}
+          schema:
+            type: string
+        "500":
+          description: msg":"token生成错误"}
           schema:
             type: string
       summary: '"用户登录"'
       tags:
-      - Givecomment
+      - Login
   /money/goods/addition:
     post:
       consumes:
@@ -106,20 +110,20 @@ paths:
             type: string
       summary: '"上架商品"'
       tags:
-      - New goods
+      - Good
   /money/goods/comment:
     post:
       consumes:
       - application/json
       description: '"用户做出评价，点击评价时的api"'
       parameters:
-      - description: comment
+      - description: 评论
         in: body
         name: comment
         required: true
         schema:
           $ref: '#/definitions/handler.Description'
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -132,19 +136,19 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"用户对某个商品的评论"'
       tags:
-      - Givecomment
+      - Comment
   /money/goods/comments:
     get:
       consumes:
       - application/json
       description: '"商品详情页点击评价时的api "scores":所有分值情况, "infor":"评论信息以及学号""'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -169,7 +173,7 @@ paths:
       - application/json
       description: '"下架商品的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -182,21 +186,26 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"商家下架商品"'
       tags:
-      - Delete
+      - Good
   /money/goods/feedback:
     post:
       consumes:
       - application/json
       description: '"举报的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
+        required: true
+        type: string
+      - description: 只需上传用户勾选的个数 内容不需要
+        in: formData
+        name: reasonNum
         required: true
         type: string
       produces:
@@ -207,19 +216,19 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"接收举报"'
       tags:
-      - Feedback
+      - Good
   /money/goods/scanning:
     get:
       consumes:
       - application/json
       description: '"点击进入商品详情页的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -237,14 +246,14 @@ paths:
             type: string
       summary: '"查询某个商品的详细信息"'
       tags:
-      - Scan
+      - Good
   /money/goods/shopping:
     get:
       consumes:
       - application/json
       description: '"点击购买时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -253,23 +262,23 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"success","img":"联系方式对应的url"}
+          description: msg":"success","way":"联系方式对应的url"}
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"用户进行购买"'
       tags:
-      - Buy
+      - Good
   /money/homepage:
     get:
       consumes:
       - application/json
-      description: '"order=1->返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api"'
+      description: '"主页的api"'
       parameters:
-      - description: page
+      - description: 页码
         in: query
         name: page
         required: true
@@ -282,17 +291,17 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"主页内容"'
       tags:
-      - Homepage
+      - Good
   /money/message:
     get:
       consumes:
       - application/json
-      description: '"信息已根据时间按升序排列，id越大越新，消息通知的api"'
+      description: '"消息通知的api"'
       produces:
       - application/json
       responses:
@@ -301,17 +310,19 @@ paths:
           schema:
             type: string
         "500":
-          description: error happened
+          description: msg":"error happened","infor":[]tables.Message}
+          schema:
+            type: string
       summary: '"返回用户购买、收藏后的信息"'
       tags:
-      - Return Message
+      - Message
   /money/my/cancellation:
     post:
       consumes:
       - application/json
       description: '"在购物车里取消收藏的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -320,16 +331,16 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"success"}
+          description: msg":"cancel successfully"}
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"取消收藏"'
       tags:
-      - Cancel
+      - Star
   /money/my/cart:
     get:
       consumes:
@@ -347,12 +358,12 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"查看我的购物车"'
       tags:
-      - MYCart
+      - My
   /money/my/goods:
     get:
       consumes:
@@ -366,19 +377,19 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"查看我的橱窗"'
       tags:
-      - MYgoods
+      - My
   /money/my/goods/finish:
     get:
       consumes:
       - application/json
       description: '"点击确认完成时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品编号
         in: query
         name: goodsid
         required: true
@@ -391,10 +402,12 @@ paths:
           schema:
             type: string
         "500":
-          description: error happened
+          description: msg":"error happened in server"}
+          schema:
+            type: string
       summary: '"商家完成订单"'
       tags:
-      - Finish trade
+      - Trade
   /money/my/goods/unfish:
     get:
       consumes:
@@ -414,7 +427,7 @@ paths:
             type: string
       summary: '"返回用户与卖家未完成的订单"'
       tags:
-      - return trade
+      - Trade
   /money/my/message:
     get:
       consumes:
@@ -428,19 +441,19 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened","infor":tables.User}
+          description: msg":"error happened in server","infor":tables.User}
           schema:
             type: string
       summary: '"返回我的信息"'
       tags:
-      - Message
+      - My
   /money/new_star:
     patch:
       consumes:
       - application/json
       description: '"添加至购物车时的api"'
       parameters:
-      - description: goodsid
+      - description: 商品的编号
         in: query
         name: goodsid
         required: true
@@ -449,28 +462,28 @@ paths:
       - application/json
       responses:
         "200":
-          description: msg":"add successfully or 你已经收藏过该商品了"}
+          description: msg":"add successfully" "msg":"你已经收藏过该商品了"}
           schema:
             type: string
         "500":
-          description: msg":"error happened"}
+          description: msg":"error happened in server"}
           schema:
             type: string
       summary: '"新增收藏"'
       tags:
-      - Add
+      - Star
   /money/search:
     post:
       consumes:
       - application/json
       description: '"order=1->返回前十个商品的内容，summary不需要展示出来-》在商品详情页里,搜索的api"'
       parameters:
-      - description: content
+      - description: 搜索框输入的内容
         in: formData
         name: content
         required: true
         type: string
-      - description: page
+      - description: 页码
         in: query
         name: page
         required: true
@@ -488,7 +501,7 @@ paths:
             type: string
       summary: '"搜索并返回已排序的商品信息"'
       tags:
-      - Search
+      - Good
 schemes:
 - http
 swagger: "2.0"

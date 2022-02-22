@@ -1,7 +1,8 @@
 package handler
 
 import (
-	"miniproject/model/mysql"
+	"log"
+	"miniproject/model"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
 	"miniproject/pkg/response"
@@ -11,12 +12,12 @@ import (
 
 //@Summary "用户进行购买"
 //@Description "点击购买时的api"
-//@Tags Buy
+//@Tags Good
 //@Accept application/json
 //@Produce application/json
-//@Param goodsid query string true "goodsid"
-//@Success 200 {string} json{"msg":"success","img":"联系方式对应的url"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Param goodsid query string true "商品编号"
+//@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {
 	//买完之后就展示联系方式，并把用户名字放在buyer中
@@ -27,17 +28,17 @@ func Buy(c *gin.Context) {
 	)
 
 	goodsidstring := c.Query("goodsid")
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
+	stuid, exists := c.MustGet("id").(string)
 	goodsid := easy.STI(goodsidstring)
 
-	if !exists || !ok || goodsid == -1 {
-		response.SendResponse(c, "error happened", 500)
+	if !exists || goodsid == -1 {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println("err")
 		return
 	}
 
-	mysql.DB.Select("buyer", "way", "id").Where("goods_id=?", goodsid).Find(&good)
-
+	//mysql.DB.Select("buyer", "way", "id").Where("goods_id=?", goodsid).Find(&good)
+	good = model.GetOrderGood(goodsid)
 	//存储消息通知
 	easy.Returnbuy(stuid, good.ID)
 
@@ -47,12 +48,15 @@ func Buy(c *gin.Context) {
 		strstr = strstr + stuid
 	}
 
-	mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
-	//mysql.DB.Where("goods_id=?", goodsid).Find(&good)
-	//fmt.Println(good)
+	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
+	err := model.UpdateGoodBuyer(goodsid, strstr)
+	if err != nil {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
+		return
+	}
 
-	//用户购买后把商品id存入buygoods
-	mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Find(&user)
+	user = model.GetOrderUser(stuid)
 	strstr = ""
 	if user.Buygoods != "" {
 		strstr = easy.New(user.Buygoods, goodsidstring)
@@ -61,7 +65,13 @@ func Buy(c *gin.Context) {
 	}
 
 	//re := easy.New(user.Buygoods, goodsidstring)
-	mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
+	//mysql.DB.Model(&tables.User{}).Where("id=?", stuid).Update("buygoods", strstr)
+	err = model.UpdateBuygoods(stuid, strstr)
+	if err != nil {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(err)
+		return
+	}
 
 	//Way存放图片对应的地址，再使用staticfs打开
 

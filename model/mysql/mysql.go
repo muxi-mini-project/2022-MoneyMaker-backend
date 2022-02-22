@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"miniproject/config"
 	"miniproject/model/tables"
+	"miniproject/pkg/avatar"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -35,10 +36,6 @@ var DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 func Init() {
 
-	//fmt.Println(dsn)
-
-	//新建一个空的通知，id的大小可以分辨出其时间先后
-
 	if err != nil {
 		fmt.Println("Init err!", err)
 		return
@@ -56,4 +53,25 @@ func Init() {
 
 	DataInit()
 
+}
+
+//登录成功初始化这个用户的信息
+func Create(id string, name string, psd string) {
+	var user tables.User
+	//不存在就会报错
+	DB.Where("id=?", id).Find(&user)
+	avatar := avatar.GetAvatar()
+	if user.ID != id {
+		DB.Model(&tables.User{}).Create(map[string]interface{}{
+			"id":       id,
+			"avatar":   avatar, //随机分配头像
+			"nickname": name,
+			"buygoods": "",
+			"password": psd,
+		})
+
+		//新建一个空的购物车
+		DB.Model(&tables.Cart{}).Create(map[string]interface{}{
+			"id": id})
+	}
 }

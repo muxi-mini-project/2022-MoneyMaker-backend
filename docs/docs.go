@@ -37,12 +37,12 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Givecomment"
+                    "Login"
                 ],
                 "summary": "\"用户登录\"",
                 "parameters": [
                     {
-                        "description": "用户信息",
+                        "description": "id 学号 password 密码进行base64加密后的字符串",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -53,13 +53,19 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"login successfully\"}",
+                        "description": "msg\":   \"登录成功\",\"token\": token,\"tips\": \"请保留token并将其放在之后的请求头中\"}",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "401": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"unauthorization\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "msg\":\"token生成错误\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -77,7 +83,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "New goods"
+                    "Good"
                 ],
                 "summary": "\"上架商品\"",
                 "parameters": [
@@ -150,12 +156,12 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Givecomment"
+                    "Comment"
                 ],
                 "summary": "\"用户对某个商品的评论\"",
                 "parameters": [
                     {
-                        "description": "comment",
+                        "description": "评论",
                         "name": "comment",
                         "in": "body",
                         "required": true,
@@ -165,7 +171,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -179,7 +185,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -203,7 +209,7 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -235,13 +241,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Delete"
+                    "Good"
                 ],
                 "summary": "\"商家下架商品\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -255,7 +261,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -273,15 +279,22 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Feedback"
+                    "Good"
                 ],
                 "summary": "\"接收举报\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "只需上传用户勾选的个数 内容不需要",
+                        "name": "reasonNum",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -293,7 +306,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -311,13 +324,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Scan"
+                    "Good"
                 ],
                 "summary": "\"查询某个商品的详细信息\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -349,13 +362,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Buy"
+                    "Good"
                 ],
                 "summary": "\"用户进行购买\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -363,13 +376,13 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"img\":\"联系方式对应的url\"}",
+                        "description": "msg\":\"success\",\"way\":\"联系方式对应的url\"}",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -379,7 +392,7 @@ var doc = `{
         },
         "/money/homepage": {
             "get": {
-                "description": "\"order=1-\u003e返回前十个商品的内容，summary不需要展示出来，是在商品详情页里，主页的api\"",
+                "description": "\"主页的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -387,13 +400,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Homepage"
+                    "Good"
                 ],
                 "summary": "\"主页内容\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "page",
+                        "description": "页码",
                         "name": "page",
                         "in": "query",
                         "required": true
@@ -407,7 +420,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -417,7 +430,7 @@ var doc = `{
         },
         "/money/message": {
             "get": {
-                "description": "\"信息已根据时间按升序排列，id越大越新，消息通知的api\"",
+                "description": "\"消息通知的api\"",
                 "consumes": [
                     "application/json"
                 ],
@@ -425,7 +438,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Return Message"
+                    "Message"
                 ],
                 "summary": "\"返回用户购买、收藏后的信息\"",
                 "responses": {
@@ -436,7 +449,10 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "error happened"
+                        "description": "msg\":\"error happened\",\"infor\":[]tables.Message}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -451,13 +467,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Cancel"
+                    "Star"
                 ],
                 "summary": "\"取消收藏\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -465,13 +481,13 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\"}",
+                        "description": "msg\":\"cancel successfully\"}",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -489,7 +505,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "MYCart"
+                    "My"
                 ],
                 "summary": "\"查看我的购物车\"",
                 "responses": {
@@ -506,7 +522,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -524,7 +540,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "MYgoods"
+                    "My"
                 ],
                 "summary": "\"查看我的橱窗\"",
                 "responses": {
@@ -535,7 +551,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -553,13 +569,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Finish trade"
+                    "Trade"
                 ],
                 "summary": "\"商家完成订单\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -573,7 +589,10 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "error happened"
+                        "description": "msg\":\"error happened in server\"}",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -588,7 +607,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "return trade"
+                    "Trade"
                 ],
                 "summary": "\"返回用户与卖家未完成的订单\"",
                 "responses": {
@@ -617,7 +636,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Message"
+                    "My"
                 ],
                 "summary": "\"返回我的信息\"",
                 "responses": {
@@ -628,7 +647,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\",\"infor\":tables.User}",
+                        "description": "msg\":\"error happened in server\",\"infor\":tables.User}",
                         "schema": {
                             "type": "string"
                         }
@@ -646,13 +665,13 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Add"
+                    "Star"
                 ],
                 "summary": "\"新增收藏\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "goodsid",
+                        "description": "商品的编号",
                         "name": "goodsid",
                         "in": "query",
                         "required": true
@@ -660,13 +679,13 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"add successfully or 你已经收藏过该商品了\"}",
+                        "description": "msg\":\"add successfully\" \"msg\":\"你已经收藏过该商品了\"}",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "msg\":\"error happened in server\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -684,20 +703,20 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Search"
+                    "Good"
                 ],
                 "summary": "\"搜索并返回已排序的商品信息\"",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "content",
+                        "description": "搜索框输入的内容",
                         "name": "content",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "page",
+                        "description": "页码",
                         "name": "page",
                         "in": "query",
                         "required": true
@@ -767,7 +786,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0.0",
-	Host:        "localhost:8080",
+	Host:        "119.3.133.235:8080",
 	BasePath:    "/api/vi",
 	Schemes:     []string{"http"},
 	Title:       "miniproject",

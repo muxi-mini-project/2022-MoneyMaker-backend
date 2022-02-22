@@ -7,9 +7,10 @@ type User struct {
 	ID       string `gorm:"id"`
 	Avatar   string `gorm:"avatar"`
 	Buygoods string `gorm:"buygoods"`
+	Password string `gorm:"password"`
 }
 
-//下架了，就都差看不到了
+//下架了
 type Good struct {
 	GoodsID   int     `gorm:"goods_id"`
 	Title     string  `gorm:"title"`

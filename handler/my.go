@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"log"
+	"miniproject/model"
 	"miniproject/model/mysql"
 	"miniproject/model/tables"
 	easy "miniproject/pkg/easygo"
@@ -12,21 +14,23 @@ import (
 
 //@Summary "查看我的橱窗"
 //@Description "橱窗"
-//@Tags MYgoods
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/goods [get]
 func Mygoods(c *gin.Context) {
 	var goods []tables.Good
 	id, exists := c.Get("id")
 	stuid, ok := id.(string)
 	if !ok || !exists {
-		response.SendResponse(c, "error happened!", 500)
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(ok, exists)
 		return
 	}
 	mysql.DB.Where("id=?", stuid).Find(&goods)
+
 	for i := 0; i < len(goods); i++ {
 		goods[i].Way = ""
 	}
@@ -38,12 +42,12 @@ func Mygoods(c *gin.Context) {
 
 //@Summary "查看我的购物车"
 //@Description "购物车"
-//@Tags MYCart
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
 //@Success 204 {string} json{"msg":"check successfully","infot":"nothing"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Failure 500 {string} json{"msg":"error happened in server"}
 //@Router /money/my/cart [get]
 func Mycart(c *gin.Context) {
 	var (
@@ -52,37 +56,33 @@ func Mycart(c *gin.Context) {
 		good  tables.Good
 	)
 
-	id, exists := c.Get("id")
-	stuid, ok := id.(string)
+	stuid, exists := c.MustGet("id").(string)
 
-	if !ok || !exists {
-		response.SendResponse(c, "error happened!", 500)
+	if !exists {
+		response.SendResponse(c, "error happened in server", 500)
+		log.Println(exists)
 		return
 	}
 
-	mysql.DB.Where("id=?", stuid).Find(&cart)
+	//mysql.DB.Where("id=?", stuid).Find(&cart)
+	cart = model.GetOrderCart(stuid)
 
 	if cart.Goodsid == "" {
 		response.SendResponse(c, "nothing", 204)
 		return
-	} else {
-		goodsstrs := strings.Split(cart.Goodsid, ",")
+	}
 
-		for _, v := range goodsstrs {
-			goodsid := easy.STI(v)
+	goodsStrs := strings.Split(cart.Goodsid, ",")
 
-			if goodsid != -1 {
-				err := mysql.DB.Where("goods_id=?", goodsid).Find(&good).Error
+	for _, v := range goodsStrs {
+		goodsid := easy.STI(v)
 
-				if err != nil {
-					response.SendResponse(c, "error", 500)
-					return
-				}
-
-				goods = append(goods, good)
-			}
+		if goodsid != -1 {
+			model.GetOrderGood(goodsid)
+			goods = append(goods, good)
 		}
 	}
+
 	c.JSON(200, gin.H{
 		"msg":   "success",
 		"goods": goods,
@@ -91,22 +91,23 @@ func Mycart(c *gin.Context) {
 
 //@Summary "返回我的信息"
 //@Description "我的个人信息的api"
-//@Tags Message
+//@Tags My
 //@Accept application/json
 //@Produce application/json
 //@Success 200 {string} json{"msg":"avatar 是头像对应的url","infor":tables.User}
-//@Failure 500 {string} json{"msg":"error happened","infor":tables.User}
+//@Failure 500 {string} json{"msg":"error happened in server","infor":tables.User}
 //@Router /money/my/message [get]
 func Mymessage(c *gin.Context) {
 	var user tables.User
 
-	id, exists := c.Get("id")
+	id, exists := c.MustGet("id").(string)
 	if !exists {
-		response.SendResponse(c, "return error!", 500)
+		response.SendResponse(c, "error happened in server!", 500)
 		return
 	}
 
-	mysql.DB.Where("id=?", id).Find(&user)
+	//mysql.DB.Where("id=?", id).Find(&user)
+	user = model.GetOrderUser(id)
 
 	user.Buygoods = ""
 	c.JSON(200, gin.H{

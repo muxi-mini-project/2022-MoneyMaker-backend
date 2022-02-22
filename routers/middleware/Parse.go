@@ -38,8 +38,6 @@ func Parse(c *gin.Context) {
 		return
 	}
 
-	id := token.ID
-	c.Set("id", id)
 	issuer := token.Issuer
 	//_, err := model.GetUserInfoFormOne()
 
@@ -50,4 +48,7 @@ func Parse(c *gin.Context) {
 		c.Abort()
 		return
 	}
+
+	id := token.ID
+	c.Set("id", id)
 }
