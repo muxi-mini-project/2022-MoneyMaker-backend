@@ -26,7 +26,7 @@ info:
   contact:
     email: 2105753640@qq.com
     name: yyj
-  description: '"赚圈圈API 返回的goods如果其中的goodsin为yes代表它可以进行交易，即：未下架"'
+  description: '"赚圈圈API"'
   termsOfService: http://swagger.io/terrms/
   title: miniproject
   version: 1.0.0
@@ -136,7 +136,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened in server"}
+          description: msg":"error in database"}
           schema:
             type: string
       summary: '"用户对某个商品的评论"'
@@ -158,6 +158,10 @@ paths:
       responses:
         "200":
           description: infor":[]tables.Comment,"score":All}
+          schema:
+            type: string
+        "304":
+          description: msg":"error in database"}
           schema:
             type: string
         "500":
@@ -215,6 +219,10 @@ paths:
           description: msg":"举报成功!"}
           schema:
             type: string
+        "304":
+          description: msg":"error in database"}
+          schema:
+            type: string
         "500":
           description: msg":"error happened in server"}
           schema:
@@ -238,6 +246,10 @@ paths:
       responses:
         "200":
           description: msg":"success","infor":tables.User,"user":tables.User,"tips":"如果goodsin是no则代表已经下架，此时则不显示开启交易按钮"}
+          schema:
+            type: string
+        "304":
+          description: msg":"error in database"}
           schema:
             type: string
         "500":
@@ -266,7 +278,7 @@ paths:
           schema:
             type: string
         "500":
-          description: msg":"error happened in server"}
+          description: msg":"error in database"}
           schema:
             type: string
       summary: '"用户进行购买"'
@@ -334,6 +346,10 @@ paths:
           description: msg":"cancel successfully"}
           schema:
             type: string
+        "304":
+          description: msg":"error in database"}
+          schema:
+            type: string
         "500":
           description: msg":"error happened in server"}
           schema:
@@ -355,6 +371,10 @@ paths:
             type: string
         "204":
           description: msg":"check successfully","infot":"nothing"}
+          schema:
+            type: string
+        "304":
+          description: msg":"error in database"}
           schema:
             type: string
         "500":
@@ -440,6 +460,10 @@ paths:
           description: msg":"avatar 是头像对应的url","infor":tables.User}
           schema:
             type: string
+        "304":
+          description: msg":"error in database"}
+          schema:
+            type: string
         "500":
           description: msg":"error happened in server","infor":tables.User}
           schema:
@@ -463,6 +487,10 @@ paths:
       responses:
         "200":
           description: msg":"add successfully" "msg":"你已经收藏过该商品了"}
+          schema:
+            type: string
+        "304":
+          description: msg":"error in database"}
           schema:
             type: string
         "500":

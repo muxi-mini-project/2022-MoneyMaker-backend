@@ -48,6 +48,7 @@ func Mygoods(c *gin.Context) {
 //@Success 200 {string} json{"msg":"check successfully","infot":[]tables.Good}
 //@Success 204 {string} json{"msg":"check successfully","infot":"nothing"}
 //@Failure 500 {string} json{"msg":"error happened in server"}
+//@Failure 304 {string} json{"msg":"error in database"}
 //@Router /money/my/cart [get]
 func Mycart(c *gin.Context) {
 	var (
@@ -65,7 +66,11 @@ func Mycart(c *gin.Context) {
 	}
 
 	//mysql.DB.Where("id=?", stuid).Find(&cart)
-	cart = model.GetOrderCart(stuid)
+	cart, err := model.GetOrderCart(stuid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 
 	if cart.Goodsid == "" {
 		response.SendResponse(c, "nothing", 204)
@@ -96,6 +101,7 @@ func Mycart(c *gin.Context) {
 //@Produce application/json
 //@Success 200 {string} json{"msg":"avatar 是头像对应的url","infor":tables.User}
 //@Failure 500 {string} json{"msg":"error happened in server","infor":tables.User}
+//@Failure 304 {string} json{"msg":"error in database"}
 //@Router /money/my/message [get]
 func Mymessage(c *gin.Context) {
 	var user tables.User
@@ -107,7 +113,11 @@ func Mymessage(c *gin.Context) {
 	}
 
 	//mysql.DB.Where("id=?", id).Find(&user)
-	user = model.GetOrderUser(id)
+	user, err := model.GetOrderUser(id)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 
 	user.Buygoods = ""
 	c.JSON(200, gin.H{

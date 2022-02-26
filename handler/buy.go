@@ -18,6 +18,7 @@ import (
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
 //@Failure 500 {string} json{"msg":"error happened in server"}
+//@Failure 500 {string} json{"msg":"error in database"}
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {
 	//买完之后就展示联系方式，并把用户名字放在buyer中
@@ -38,7 +39,11 @@ func Buy(c *gin.Context) {
 	}
 
 	//mysql.DB.Select("buyer", "way", "id").Where("goods_id=?", goodsid).Find(&good)
-	good = model.GetOrderGood(goodsid)
+	good, err := model.GetOrderGood(goodsid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 	//存储消息通知
 	easy.Returnbuy(stuid, good.ID)
 
@@ -49,14 +54,18 @@ func Buy(c *gin.Context) {
 	}
 
 	//mysql.DB.Model(&tables.Good{}).Where("goods_id=?", goodsid).Update("buyer", strstr)
-	err := model.UpdateGoodBuyer(goodsid, strstr)
+	err = model.UpdateGoodBuyer(goodsid, strstr)
 	if err != nil {
 		response.SendResponse(c, "error happened in server", 500)
 		log.Println(err)
 		return
 	}
 
-	user = model.GetOrderUser(stuid)
+	user, err = model.GetOrderUser(stuid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 	strstr = ""
 	if user.Buygoods != "" {
 		strstr = easy.New(user.Buygoods, goodsidstring)

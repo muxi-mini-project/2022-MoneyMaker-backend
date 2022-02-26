@@ -9,7 +9,7 @@ import (
 
 //@title miniproject
 //@version 1.0.0
-//@description "赚圈圈API 返回的goods如果其中的goodsin为yes代表它可以进行交易，即：未下架"
+//@description "赚圈圈API"
 //@termsOfService http://swagger.io/terrms/
 
 //@contact.name yyj

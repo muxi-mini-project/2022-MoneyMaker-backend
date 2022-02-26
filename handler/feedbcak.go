@@ -21,6 +21,7 @@ import (
 //@Param reasonNum formData string true "只需上传用户勾选的个数 内容不需要"
 //@Success 200 {string} json{"msg":"举报成功!"}
 //@Failure 500 {string} json{"msg":"error happened in server"}
+//@Failure 304 {string} json{"msg":"error in database"}
 //@Router /money/goods/feedback [post]
 func Feedback(c *gin.Context) {
 	var good tables.Good
@@ -31,7 +32,11 @@ func Feedback(c *gin.Context) {
 	num := easy.STI(resonNum)
 
 	//mysql.DB.Select("feed_back").Where("goods_id=?", goodsid).Find(&good)
-	good = model.GetOrderGood(goodsid)
+	good, err := model.GetOrderGood(goodsid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 
 	if goodsid == -1 && num == -1 {
 		response.SendResponse(c, "error happened in server", 500)

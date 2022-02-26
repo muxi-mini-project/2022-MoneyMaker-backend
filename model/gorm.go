@@ -11,22 +11,22 @@ func GetLastRecord() (tables.Good, error) {
 	return good, err
 }
 
-func GetOrderCart(id string) tables.Cart {
+func GetOrderCart(id string) (tables.Cart, error) {
 	var cart tables.Cart
-	mysql.DB.Where("id=?", id).Find(&cart)
-	return cart
+	err := mysql.DB.Where("id=?", id).Find(&cart).Error
+	return cart, err
 }
 
-func GetOrderGood(goodsidint int) tables.Good {
+func GetOrderGood(goodsidint int) (tables.Good, error) {
 	var good tables.Good
-	mysql.DB.Where("goods_id=?", goodsidint).Find(&good)
-	return good
+	err := mysql.DB.Where("goods_id=?", goodsidint).Find(&good).Error
+	return good, err
 }
 
-func GetOrderUser(id string) tables.User {
+func GetOrderUser(id string) (tables.User, error) {
 	var user tables.User
-	mysql.DB.Model(&tables.User{}).Where("id=?", id).Find(&user)
-	return user
+	err := mysql.DB.Model(&tables.User{}).Where("id=?", id).Find(&user).Error
+	return user, err
 }
 
 func UpdateBuygoods(id string, buygoods string) error {
@@ -37,8 +37,8 @@ func UpdateGoodBuyer(id int, buyer string) error {
 	return mysql.DB.Model(&tables.Good{}).Where("goods_id=?", id).Update("buyer", buyer).Error
 }
 
-func GetGoodComment(id int) []tables.Comment {
+func GetGoodComment(id int) ([]tables.Comment, error) {
 	var comments []tables.Comment
-	mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", id).Find(&comments)
-	return comments
+	err := mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", id).Find(&comments).Error
+	return comments, err
 }

@@ -24,7 +24,7 @@ func Homepage(c *gin.Context) {
 
 	page := c.DefaultQuery("page", "1")
 	num := easy.STI(page)
-	err := mysql.DB.Order("feed_back desc").Order("scores desc").Where("goodsin=?", "yes").Find(&goods).Error
+	err := mysql.DB.Limit(10).Offset(num*10).Order("feed_back desc").Order("scores desc").Where("goodsin=?", "yes").Find(&goods).Error
 
 	if err != nil || num == -1 {
 		response.SendResponse(c, "error happened in server", 500)
@@ -36,15 +36,8 @@ func Homepage(c *gin.Context) {
 		goods[i].Way = ""
 	}
 
-	if len(goods) < 10 {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods,
-		})
-	} else {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods[:num*10],
-		})
-	}
+	c.JSON(200, gin.H{
+		"msg":   "success",
+		"goods": goods,
+	})
 }

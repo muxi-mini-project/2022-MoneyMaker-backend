@@ -37,6 +37,7 @@ type Description struct {
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} {"infor":[]tables.Comment,"score":All}
 //@Failure 500 {string} json{"msg":"err"}
+//@Failure 304 {string} json{"msg":"error in database"}
 //@Router /money/goods/comments [get]
 func Getcomment(c *gin.Context) {
 	//先获取goodsid
@@ -51,7 +52,11 @@ func Getcomment(c *gin.Context) {
 	}
 
 	//mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", goodsid).Find(&re)
-	re = model.GetGoodComment(goodsid)
+	re, err = model.GetGoodComment(goodsid)
+	if err != nil {
+		log.Println(err)
+		response.SendResponse(c, "error in database", 304)
+	}
 
 	for i := 0; i < len(re); i++ {
 		all.Sum += re[i].Score
@@ -88,6 +93,7 @@ func Getcomment(c *gin.Context) {
 //@Param goodsid query string true "商品编号"
 //@Success 200 {string} json{"msg":"give successfully"}
 //@Failure 500 {string} json{"msg":"error happened in server"}
+//@Failure 500 {string} json{"msg":"error in database"}
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
 	var (

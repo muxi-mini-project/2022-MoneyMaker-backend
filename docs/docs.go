@@ -185,7 +185,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -218,6 +218,12 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "infor\":[]tables.Comment,\"score\":All}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -305,6 +311,12 @@ var doc = `{
                             "type": "string"
                         }
                     },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "msg\":\"error happened in server\"}",
                         "schema": {
@@ -339,6 +351,12 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "msg\":\"success\",\"infor\":tables.User,\"user\":tables.User,\"tips\":\"如果goodsin是no则代表已经下架，此时则不显示开启交易按钮\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -382,7 +400,7 @@ var doc = `{
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -486,6 +504,12 @@ var doc = `{
                             "type": "string"
                         }
                     },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "msg\":\"error happened in server\"}",
                         "schema": {
@@ -517,6 +541,12 @@ var doc = `{
                     },
                     "204": {
                         "description": "msg\":\"check successfully\",\"infot\":\"nothing\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -646,6 +676,12 @@ var doc = `{
                             "type": "string"
                         }
                     },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "msg\":\"error happened in server\",\"infor\":tables.User}",
                         "schema": {
@@ -680,6 +716,12 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "msg\":\"add successfully\" \"msg\":\"你已经收藏过该商品了\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "304": {
+                        "description": "msg\":\"error in database\"}",
                         "schema": {
                             "type": "string"
                         }
@@ -790,7 +832,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/api/vi",
 	Schemes:     []string{"http"},
 	Title:       "miniproject",
-	Description: "\"赚圈圈API 返回的goods如果其中的goodsin为yes代表它可以进行交易，即：未下架\"",
+	Description: "\"赚圈圈API\"",
 }
 
 type s struct{}
