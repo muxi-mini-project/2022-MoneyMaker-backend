@@ -19,9 +19,9 @@ import (
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
 //@Param reasonNum formData string true "只需上传用户勾选的个数 内容不需要"
-//@Success 200 {string} json{"msg":"举报成功!"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Failure 304 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "举报成功!"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 304 {object} response.Resp "error in database"
 //@Router /money/goods/feedback [post]
 func Feedback(c *gin.Context) {
 	var good tables.Good

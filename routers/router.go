@@ -67,6 +67,9 @@ func Router() *gin.Engine {
 
 			//确认完成
 			groupmy.POST("/goods/finish", handler.Finsh) //ok
+
+			// 修改昵称
+			groupmy.GET("/name", handler.ChangeNickname)
 		}
 
 		//根据内容对商品的summary搜索

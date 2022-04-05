@@ -42,3 +42,14 @@ func GetGoodComment(id int) ([]tables.Comment, error) {
 	err := mysql.DB.Model(&tables.Comment{}).Where("goods_id=?", id).Find(&comments).Error
 	return comments, err
 }
+
+func GetLoginInfor(id string) tables.User {
+	var acc tables.User
+	mysql.DB.Model(&tables.User{}).Where("id=?", id).Find(&acc)
+	return acc
+}
+
+func UpadateName(name string, id string) error {
+	err := mysql.DB.Where("id=?", id).Update("nickname", name).Error
+	return err
+}

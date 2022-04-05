@@ -17,9 +17,9 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品的编号"
-//@Success 200 {string} json{"msg":"add successfully" "msg":"你已经收藏过该商品了"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Failure 304 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "add successfully" or "你已经收藏过该商品了"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 304 {object} response.Resp "error in database"
 //@Router /money/new_star [patch]
 func Addstar(c *gin.Context) {
 	//用户收藏后在cart里就会新增这个商品的goodsid

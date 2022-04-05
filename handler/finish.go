@@ -17,13 +17,18 @@ type Two struct {
 	Buyer []string
 }
 
+type ReturnType struct {
+	Strbuy  []tables.Good `json:"buy"`
+	Strsell []Two         `json:"sell"`
+}
+
 //@Summary "返回用户与卖家未完成的订单"
 //@Description "返回订单,需要点完成的是‘my sell’->[]string 是与我做交易的人的id,因为一个商品可能被多个人购买，所以string切片的长度就是‘完成订单’的订单数,点评价的是‘my buy’"
 //@Tags Trade
 //@Accept application/json
 //@Produce application/json
-//@Success 200 {string} json{"msg":"success","my buy":[]tables.Good,"my sell":[]Two}
-//@Failure 500 {string} json{"error happened"}
+//@Success 200 {object} response.Resp "success"
+//@Failure 500 {object} response.Resp "error happened"
 //@Router /money/my/goods/unfish [get]
 func UnFinish(c *gin.Context) {
 	var (
@@ -67,9 +72,12 @@ func UnFinish(c *gin.Context) {
 		}
 	}
 	c.JSON(200, gin.H{
-		"msg":     "success",
-		"my buy":  strbuy,
-		"my sell": strsell,
+		"code": 200,
+		"msg":  "success",
+		"data": ReturnType{
+			Strbuy:  strbuy,
+			Strsell: strsell,
+		},
 	})
 }
 
@@ -119,7 +127,9 @@ func Finsh(c *gin.Context) {
 	//mysql.DB.Model(&tables.User{}).Where("id=?", id).Update("buygoods", re)
 	model.UpdateBuygoods(id, re)
 
-	c.JSON(200, gin.H{
-		"msg": "success",
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "successfully",
+		Data: nil,
 	})
 }

@@ -16,8 +16,8 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} {"msg":"delete successfully"}
-//@Failure 500 {string} {"msg":"error happened in server"}
+//@Success 200 {object} response.Resp "delete successfully"
+//@Failure 500 {object} response.Resp "error happened in server"
 //@Router /money/goods/deletion [delete]
 func Deletegood(c *gin.Context) {
 	goodsstr := c.Query("goodsid")

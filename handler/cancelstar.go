@@ -17,9 +17,9 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} json{"msg":"cancel successfully"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Failure 304 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "cancel successfully"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 304 {object} response.Resp "error in database"
 //@Router /money/my/cancellation [post]
 func Cancelstar(c *gin.Context) {
 	var cart tables.Cart

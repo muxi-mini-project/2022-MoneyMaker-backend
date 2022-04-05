@@ -16,9 +16,9 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} json{"msg":"success","way":"联系方式对应的url"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Failure 500 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "success"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 500 {object} response.Resp "error in database"
 //@Router /money/goods/shopping [get]
 func Buy(c *gin.Context) {
 	//买完之后就展示联系方式，并把用户名字放在buyer中
@@ -84,8 +84,9 @@ func Buy(c *gin.Context) {
 
 	//Way存放图片对应的地址，再使用staticfs打开
 
-	c.JSON(200, gin.H{
-		"msg": "buy successfully",
-		"way": good.Way,
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "buy successfully",
+		Data: good.Way,
 	})
 }

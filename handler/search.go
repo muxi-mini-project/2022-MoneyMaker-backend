@@ -18,8 +18,8 @@ import (
 //@Produce application/json
 //@Param content formData string true "搜索框输入的内容"
 //@Param page query string true "页码"
-//@Success 200 {string} json{"msg":"search successfully","infor":[]tables.Good}
-//@Success 204 {string} json{"msg":"find nothing"}
+//@Success 200 {object} response.Resp "search successfully"
+//@Success 204 {object} response.Resp "find nothing"
 //@Router /money/search [post]
 func Search(c *gin.Context) {
 	//根据举报次数与评分进行优先返回
@@ -41,14 +41,16 @@ func Search(c *gin.Context) {
 	//这里不需要返回图片的url
 
 	if len(goods) < 10 {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods,
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "success",
+			Data: goods,
 		})
 	} else {
-		c.JSON(200, gin.H{
-			"msg":   "success",
-			"goods": goods[:num*10],
+		c.JSON(200, response.Resp{
+			Code: 200,
+			Msg:  "success",
+			Data: goods[:num*10],
 		})
 	}
 }

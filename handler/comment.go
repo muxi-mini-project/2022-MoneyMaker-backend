@@ -29,15 +29,20 @@ type Description struct {
 	Comment string `json:"comment" binding:"required"`
 }
 
+type ReturnComment struct {
+	Comment []tables.Comment `json:"comment"`
+	All     All              `json:"all"`
+}
+
 //@Summary "获取某个商品的所有评论"
 //@Description "商品详情页点击评价时的api "scores":所有分值情况, "infor":"评论信息以及学号""
 //@Tags Comment
 //@Accept application/json
 //@Produce application/json
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} {"infor":[]tables.Comment,"score":All}
-//@Failure 500 {string} json{"msg":"err"}
-//@Failure 304 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "successfully"
+//@Failure 500 {object} response.Resp "error in the server"
+//@Failure 304 {object} response.Resp "nothing"}
 //@Router /money/goods/comments [get]
 func Getcomment(c *gin.Context) {
 	//先获取goodsid
@@ -77,10 +82,13 @@ func Getcomment(c *gin.Context) {
 	all.Person = len(re)
 	//fmt.Println(all)
 	//若果要返回一个自定义结构体，那么它的字段应该要大写，否则会无法识别
-	c.JSON(200, gin.H{
-		"infor":  re,
-		"scores": all,
-		"msg":    "success",
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "buy successfully",
+		Data: ReturnComment{
+			All:     all,
+			Comment: re,
+		},
 	})
 }
 
@@ -91,9 +99,9 @@ func Getcomment(c *gin.Context) {
 //@Produce application/json
 //@Param comment body Description true "评论"
 //@Param goodsid query string true "商品编号"
-//@Success 200 {string} json{"msg":"give successfully"}
-//@Failure 500 {string} json{"msg":"error happened in server"}
-//@Failure 500 {string} json{"msg":"error in database"}
+//@Success 200 {object} response.Resp "give successfully"
+//@Failure 500 {object} response.Resp "error happened in server"
+//@Failure 500 {object} response.Resp "error in database"
 //@Router /money/goods/comment [post]
 func Givecomment(c *gin.Context) {
 	var (

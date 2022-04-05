@@ -15,7 +15,7 @@ import (
 //@contact.name yyj
 //@contact.email 2105753640@qq.com
 
-//@host 119.3.133.235:8080
+//@host 124.221.246.5:8080
 //@BasePath /api/vi
 //@Schemes http
 

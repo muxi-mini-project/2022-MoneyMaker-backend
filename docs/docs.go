@@ -27,7 +27,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/money/entrance": {
+        "/entrance": {
             "post": {
                 "description": "\"登录的api\"",
                 "consumes": [
@@ -42,7 +42,7 @@ var doc = `{
                 "summary": "\"用户登录\"",
                 "parameters": [
                     {
-                        "description": "id 学号 password 密码进行base64加密后的字符串",
+                        "description": "id 学号 password 密码",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -53,21 +53,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":   \"登录成功\",\"token\": token,\"tips\": \"请保留token并将其放在之后的请求头中\"}",
+                        "description": "登录成功",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "401": {
-                        "description": "msg\":\"unauthorization\"}",
+                        "description": "unauthorized",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"token生成错误\"}",
+                        "description": "token生成错误",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -132,15 +132,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"upload successfully\"}",
+                        "description": "upload successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "error happened",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -179,15 +179,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"give successfully\"}",
+                        "description": "give successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -217,21 +217,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "infor\":[]tables.Comment,\"score\":All}",
+                        "description": "successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "nothing\"}",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"err\"}",
+                        "description": "error in the server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -261,15 +261,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"delete successfully\"}",
+                        "description": "delete successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -306,21 +306,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"举报成功!\"}",
+                        "description": "举报成功!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -350,21 +350,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"infor\":tables.User,\"user\":tables.User,\"tips\":\"如果goodsin是no则代表已经下架，此时则不显示开启交易按钮\"}",
+                        "description": "success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\"}",
+                        "description": "error happened",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -394,15 +394,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"way\":\"联系方式对应的url\"}",
+                        "description": "success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -432,15 +432,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"infor\":[]tables.Good}",
+                        "description": "success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -461,15 +461,15 @@ var doc = `{
                 "summary": "\"返回用户购买、收藏后的信息\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"infor\":[]tables.Message}",
+                        "description": "success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened\",\"infor\":[]tables.Message}",
+                        "description": "error happened in the server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -499,21 +499,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"cancel successfully\"}",
+                        "description": "cancel successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -534,27 +534,27 @@ var doc = `{
                 "summary": "\"查看我的购物车\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"check successfully\",\"infot\":[]tables.Good}",
+                        "description": "check successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "204": {
-                        "description": "msg\":\"check successfully\",\"infot\":\"nothing\"}",
+                        "description": "check successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -575,15 +575,15 @@ var doc = `{
                 "summary": "\"查看我的橱窗\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"check successfully\",\"infot\":[]tables.Good}",
+                        "description": "successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -642,15 +642,15 @@ var doc = `{
                 "summary": "\"返回用户与卖家未完成的订单\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"success\",\"my buy\":[]tables.Good,\"my sell\":[]Two}",
+                        "description": "success",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "error happened\"}",
+                        "description": "error happened",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -671,21 +671,50 @@ var doc = `{
                 "summary": "\"返回我的信息\"",
                 "responses": {
                     "200": {
-                        "description": "msg\":\"avatar 是头像对应的url\",\"infor\":tables.User}",
+                        "description": "successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\",\"infor\":tables.User}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
+                        }
+                    }
+                }
+            }
+        },
+        "/money/my/name": {
+            "get": {
+                "description": "\"我的个人信息的api\"",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "My"
+                ],
+                "summary": "\"返回我的信息\"",
+                "responses": {
+                    "200": {
+                        "description": "change successfully",
+                        "schema": {
+                            "$ref": "#/definitions/response.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "error happened in server",
+                        "schema": {
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -715,21 +744,21 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"add successfully\" \"msg\":\"你已经收藏过该商品了\"}",
+                        "description": "add successfully\" or \"你已经收藏过该商品了",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "304": {
-                        "description": "msg\":\"error in database\"}",
+                        "description": "error in database",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "500": {
-                        "description": "msg\":\"error happened in server\"}",
+                        "description": "error happened in server",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -766,15 +795,15 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "msg\":\"search successfully\",\"infor\":[]tables.Good}",
+                        "description": "search successfully",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     },
                     "204": {
-                        "description": "msg\":\"find nothing\"}",
+                        "description": "find nothing",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.Resp"
                         }
                     }
                 }
@@ -812,6 +841,18 @@ var doc = `{
                     "type": "string"
                 }
             }
+        },
+        "response.Resp": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "msg": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
@@ -828,7 +869,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0.0",
-	Host:        "119.3.133.235:8080",
+	Host:        "124.221.246.5:8080",
 	BasePath:    "/api/vi",
 	Schemes:     []string{"http"},
 	Title:       "miniproject",

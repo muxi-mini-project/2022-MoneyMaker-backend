@@ -31,8 +31,8 @@ type Tmp struct {
 //@Param summary formData string true "详情"
 //@Param avatar formData file true "商品图二进制文件"
 //@Param way formData file true "联系方式二进制文件"
-//@Success 200 {string} json{"msg":"upload successfully"}
-//@Failure 500 {string} json{"msg":"error happened"}
+//@Success 200 {object} response.Resp "upload successfully"
+//@Failure 500 {object} response.Resp "error happened"
 //@Router /money/goods/addition [post]
 func Addgood(c *gin.Context) {
 	//新增一个商品,goodsid不需要去获取，设置了自增就可以，只要管其他的字段
@@ -94,8 +94,8 @@ func Addgood(c *gin.Context) {
 	good2.Title = title
 
 	//直接存url
-	good2.Avatar = "119.3.133.235:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
-	good2.Way = "119.3.133.235:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Avatar = "124.221.246.5:8080/images/avatar/" + strconv.Itoa(good2.GoodsID) + ".jpg"
+	good2.Way = "124.221.246.5:8080/images/way/" + strconv.Itoa(good2.GoodsID) + ".jpg"
 	good2.Goodsin = "yes"
 
 	mysql.DB.Model(&tables.Good{}).Create(&good2)

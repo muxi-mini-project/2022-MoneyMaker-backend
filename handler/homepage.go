@@ -16,8 +16,8 @@ import (
 //@Accept application/json
 //@Produce application/json
 //@Param page query string true "页码"
-//@Success 200 {string} json{"msg":"success","infor":[]tables.Good}
-//@Success 500 {string} json{"msg":"error happened in server"}
+//@Success 200 {object} response.Resp "success"
+//@Success 500 {object} response.Resp "error happened in server"
 //@Router /money/homepage [get]
 func Homepage(c *gin.Context) {
 	var goods []tables.Good
@@ -36,8 +36,9 @@ func Homepage(c *gin.Context) {
 		goods[i].Way = ""
 	}
 
-	c.JSON(200, gin.H{
-		"msg":   "success",
-		"goods": goods,
+	c.JSON(200, response.Resp{
+		Code: 200,
+		Msg:  "successfully",
+		Data: goods,
 	})
 }
